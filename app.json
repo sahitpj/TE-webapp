@@ -1,0 +1,6 @@
+{
+    "name": "DBpedia Triplet Extraction",
+    "description": "A webapp which extracts triplets from text. Research powered by DBpedia",
+    "repository": "https://github.com/sahitpj/TE-webapp",
+    "keywords": ["dbpedia", "gsoc2019", "triplets"]
+}
