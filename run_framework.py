@@ -6,4 +6,4 @@ IPAddr = socket.gethostbyname(hostname)
 
 # app_flask.run(debug=True)
 if __name__ == "__main__":
-    app_flask.run(host=IPAddr)
+    app_flask.run(host=IPAddr, debug=True)

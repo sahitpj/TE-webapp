@@ -1,0 +1,43 @@
+<html>
+    
+    {% include 'head.html' %}
+
+
+    <body>
+
+        {% include 'navbar.html' %}
+
+        <section style="margin-top: 50px;">
+            {% if annotations is not none %}
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6">
+                    <h3>Spotlight Annotations</h3>
+                    <p>
+                        {% for word in range(annotated_text | length) %}
+                            {% if annotated_text[word][0] == 0 %}
+                                {{ annotated_text[word][1] }}
+                            {% else %}
+                                <a href="{{ annotated_text[word][1]['URI'] }}">{{ annotated_text[word][1]['surfaceForm'] }}</a>
+                            {% endif %}
+                        {% endfor %}
+                    </p>
+                    </div>
+                    <div class="col-lg-6">
+                        <h4 style="padding-bottom: 10px;">Annotations identified</h4>
+                        {% for annotation in annotations %}
+                            <p class="annotation">
+                                <a href="{{ annotation['URI'] }}" ><u>{{ annotation['surfaceForm'] }}</u></a> - {{ annotation['URI'] }}
+                            </p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </section>
+
+        <br>
+        {% include 'footerbar.html' %}
+    </body>
+
+</html>
