@@ -3,10 +3,14 @@ from flask_cors import CORS, cross_origin
 
 from app import app_flask
 from .src.pyspotlight import spotlight
+from .src.hpatterns import HearstPatterns
 import nltk
 
 spotlight_config = spotlight.Config()
 spotlight_address = spotlight_config.spotlight_address
+
+METHODS = ['Hearst Patterns', 'Parse-Tree', 'Dependencies', 'Dependencies with coreferences']
+HEARST_PATTERNS_METHODS = ['Default', 'Non-greedy', 'Semi-greedy']
 
 @app_flask.route('/', methods=['GET'])
 @cross_origin(supports_credentials=True)
@@ -22,6 +26,9 @@ def search():
     q_text = request.form.get("comment")
     q_confidence = request.form.get("confidence")
     q_spotlight = request.form.get("allow_spotlight")
+    q_method = request.form.get("method")
+
+    print(q_method)
 
     sentences = nltk.sent_tokenize(q_text)
     word_tokenized_sentences = list()
@@ -31,8 +38,6 @@ def search():
         word_tokenized_sentences.append(words)
         all_words.extend(words)
 
-    print(all_words)
-    print(q_spotlight)
     if q_spotlight:
         annotations = spotlight.annotate(spotlight_address,
                                         q_text)
@@ -48,6 +53,21 @@ def search():
             annotated_text.append([1, annotations[i]])
 
 
-    print(annotated_text)
+    if q_method == METHODS[0]:
+        hpatterns1 = None
+        hpatterns2 = None
+        q_pattern_method = request.form.get("pattern-method")
+        if q_pattern_method == HEARST_PATTERNS_METHODS[0]:
+            hpatterns1 = HearstPatterns(extended = True, same_sentence = True)
+            hpatterns2 = HearstPatterns(extended = True, same_sentence = False)
+        elif q_pattern_method == HEARST_PATTERNS_METHODS[1]:
+            hpatterns1 = HearstPatterns(extended = True, same_sentence = True, greedy = True)
+            hpatterns2 = HearstPatterns(extended = True, same_sentence = False, greedy = True)
+        else:
+            hpatterns1 = HearstPatterns(extended = True, same_sentence = True, semi = True)
+            hpatterns2 = HearstPatterns(extended = True, same_sentence = False, semi = True)
+
+        
+
     return render_template('triplets.html', annotations=annotations, annotated_text=annotated_text)
     
