@@ -49,26 +49,26 @@ def annotate_triple(triple):
         combined_word = ' '.join(list(triple[0][1]) + list(triple[0][0]))
         annotation = spipe.annotate_word(combined_word)
         print(annotation)
-        if annotation == combined_word:
+        if annotation[0] == combined_word:
             annotation = spipe.annotate_word(main_word)
-        if annotation != main_word:
+        if annotation[0] != main_word:
             SUBJECT = annotation
     else:
         annotation = spipe.annotate_word(triple[0])
-        if annotation != triple[0]:
+        if annotation[0] != triple[0]:
             SUBJECT = annotation
 
     if isinstance(triple[2], list):
         main_word = triple[2][0]
         combined_word = ' '.join(list(triple[2][1]) + list(triple[2][0]))
-        annotation = spipe.annotate_word(combined_word)
-        if annotation == combined_word:
+        annotation = spipe.annotate_word(combined_word)[0]
+        if annotation[0] == combined_word:
             annotation = spipe.annotate_word(main_word)
-        if annotation != main_word:
+        if annotation[0] != main_word:
             OBJECT = annotation
     else:
         annotation = spipe.annotate_word(triple[2])
-        if annotation != triple[2]:
+        if annotation[0] != triple[2]:
             OBJECT = annotation
 
     return (SUBJECT, PREDICATE, OBJECT)
