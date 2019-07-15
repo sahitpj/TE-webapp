@@ -3,8 +3,8 @@ from __future__ import print_function, unicode_literals
 from collections import OrderedDict
 import re
 
-from conllu.compat import text
-from conllu.parser import ParseException, head_to_token, serialize
+from .compat import text
+from .parser import ParseException, head_to_token, serialize
 
 DEFAULT_EXCLUDE_FIELDS = ('id', 'deprel', 'feats', 'head', 'deps', 'misc')
 
