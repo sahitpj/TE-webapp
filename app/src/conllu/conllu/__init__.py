@@ -1,7 +1,7 @@
 from __future__ import unicode_literals
 
-from conllu.models import TokenList
-from conllu.parser import parse_token_and_metadata
+from .models import TokenList
+from .parser import parse_token_and_metadata
 
 
 def parse(data, fields=None, field_parsers=None):
