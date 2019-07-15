@@ -12,12 +12,18 @@
     </section>
 
     <section class="search-sec" id="main">
-            <div class="container" style="text-align:center;padding:50px">
+        <div class="container">
+            <div style="text-align:center;padding:20px">
                 <h1 style="font-size: 70px">DBpediaExtract</h1>
                 <h4>Efficient tool for triplet extraction</h4>
             </div>
+            <p>DBpedia Extract a tool designed to extract n-triples, or triplets (commonly called as subject-predicate-object 
+                pair). This is done using various Natural Language Processing Techniques. Further details can be found in About. Below is a 
+                Demo for the following!
+            </p>
+        </div>
         <!-- <img src="/static/back.jpg"> -->
-        <div class="container tool-area">
+        <div class="container tool-area" style="margin-top:70px;">
             <form action="/search" method="post" novalidate="novalidate" id="textform">
                 <div class="row" style="margin-top:20px;">
                     <div class="col-lg-9">
@@ -38,7 +44,8 @@
                         </div>
                     </div>
                     <div class="col-lg-3">
-                        <div>
+                        <a href="#methods" class="btn btn-secondary button m" role="button">About Methods</a>
+                        <div style="margin-top:20px;">
                             <label for="sel1">Select Method:</label>
                             <select class="form-control" id="sel1" name="method">
                                 <option>Hearst Patterns</option>
@@ -63,23 +70,68 @@
         </div>
     </section>
 
-
-    <!-- <section style="margin-top: 40px;">
-        <form action="/search_nlp" method="post" novalidate="novalidate">
+    <section class="Intro" style="margin-top:100px; padding-top: 50px" id="methods">
+        <div class="container">
+            <h2>About DBpedia Extract Methods</h2><br>
             <div class="row">
-                <div class="col-lg-12">
-                    <div class="row" style="padding:10px;">
-                        <div class="col-lg-2 offset-lg-4" >
-                            <input type="text" class="form-control search-slt" name="nlp" placeholder="NL query">
-                        </div>
-                        <div class="col-lg-2 ">
-                            <button class="btn btn-secondary button" type="submit">Search</button>  
-                        </div>
-                    </div>
+                <div class="col-lg-3">
+                    Hearst Patterns
+                </div>
+                <div class="col-lg-9">
+                    Hearst Patterns can be defined as lexical-syntactic patterns. Here we use them to extract our n-triples by using them as regex. The following 
+                    can extract triples quite efficient enough for generic sentences, but since they are restricted by pattern they cannot be applied to all 
+                    cases and most importantly to any language.<br><br>
+                    Hearst Patterns do have three sub-methods in this tool. The method names are given names based on their regex behaviour.
+                    <li><b>Default</b> - The normal regex pattern you would expect</li> 
+                    <li><b>Non-Greedy</b> - Denotes regex patterns which are non-greedy im nature (Regex works by selecting their
+                        patterns greedily in general)</li> 
+                    <li><b>Semi-Greedy</b> - A combination of both methods</li> 
+                    <br>
+                    Check out this <a href="https://sahitpj.github.io/gs/gsoc/2019/06/09/Week-2.html">blog-post</a> which talks more about it.
                 </div>
             </div>
-        </form>
-    </section> -->
+            <hr>
+            <div class="row" style="margin-top:15px;">
+                <div class="col-lg-3">
+                    Parse-Tree
+                </div>
+                <div class="col-lg-9">
+                    Given when a sentence is parsed according to it's grammatical rules, this methods uses this parse tree structure to be able 
+                    to extract triples from the text. (This is of course with the Parts of Speech information of the text)
+                    <br><br>
+                    Check out this <a href="https://sahitpj.github.io/gs/gsoc/2019/06/16/Week-3.html">blog-post</a> which talks more about it.
+                </div>
+            </div>
+            <hr>
+            <div class="row" style="margin-top:15px;">
+                <div class="col-lg-3">
+                    Dependencies
+                </div>
+                <div class="col-lg-9">
+                    Dependencies are an extra form of annotation which talks about how words in a text are related to each other through a set 
+                    of pre-defined relations. One such example of a relation is CoNLL-U. We use this extra information along with the parse-tree infromation 
+                    to better our results.
+                    <br><br>
+                    Check out this <a href="https://sahitpj.github.io/gs/gsoc/2019/06/23/Week-4.html">blog-post</a> which talks more about it.
+                </div>
+            </div>
+            <hr>
+            <div class="row" style="margin-top:15px;">
+                <div class="col-lg-3">
+                    Dependencies with coreferences
+                </div>
+                <div class="col-lg-9">
+                    Coreferences talks mainly about Dependencies across sentences. Thus allowing us to combine sentences together for 
+                    information related to a subject.
+                    <br><br>
+                    Check out this <a href="#"">blog-post</a> which talks more about it.
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
     <script>
         var slider = document.getElementById("myRange");
         var output = document.getElementById("demo");
@@ -101,6 +153,16 @@
                 element.style.display = 'none';
             }
         })
+
+        // function scrollToElement (selector) {
+        //     $('html, body').animate({
+        //         scrollTop: $(selector).offset().top
+        //     }, 2000);    
+        // };
+
+        // $(document).on('click', 'a.m', function () {
+        // scrollToElement($(this).attr('href'));
+        // });
     </script>
 
     <br>

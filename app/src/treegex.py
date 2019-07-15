@@ -2,7 +2,7 @@ import sys
 sys.path.append("../../..")
 sys.path.append("..")
 
-from conllu.conllu import parse_single, TokenList
+from .conllu.conllu import parse_single, TokenList
 from .stanford import treegex_api
 
 # data_file = open("sample.conll", "r", encoding="utf-8")
@@ -16,6 +16,10 @@ parser = CoreNLPParser(url='http://localhost:9000')
 
 
 class TripleExtraction(object):
+    """
+    Stanford treegex utility for extracting triplets. Utilises the stanford coreNLP API for execution. Make sure that it
+    is running while running. 
+    """
 
     VERBS = ['VB', 'VBD', 'VBG', 'VBN', 'VBP', 'VBZ']
     NOUNS = ['NN', 'NNS', 'NNP', 'NNPS']

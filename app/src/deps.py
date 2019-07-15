@@ -2,7 +2,7 @@ import sys
 sys.path.append("../../..")
 sys.path.append("..")
 
-from conllu.conllu import parse_single, TokenList
+from .conllu.conllu import parse_single, TokenList
 
 from nltk.parse.corenlp import CoreNLPDependencyParser
 from nltk.parse import CoreNLPParser
@@ -36,6 +36,11 @@ class TripleExtraction_Deps(object):
         return dependencies
 
     def bfs_triplets(self, start_dep, level, dependencies):
+        '''
+        finds all noun-dependencies from a start_dep
+
+        returns connected dependencies (which are not nouns), connected noun dependencies, within the level limit
+        '''
         node_1 = start_dep[0]
         node_2 = start_dep[2]
         count = 0
@@ -64,10 +69,15 @@ class TripleExtraction_Deps(object):
     def short_relations(self, dependencies, width):
         '''
         width is the number of nodes between the source and destination
+
+        returns the 
+            direct relations, these are immediate but not with the nsubj relation
+            short relations which are the short relations between nouns and connections
+            hypernyms - direct relations which have the relation of nsubj
         '''
         hypernyms = list()
         direct_relations = list()
-        short_relations = {}
+        short_relations = [] #a list of double tuples, first one with the start dep and the second one as the short relations
         for connection in dependencies:
             node_1 = connection[0]
             node_2 = connection[2]
@@ -77,9 +87,9 @@ class TripleExtraction_Deps(object):
                 else:
                     direct_relations.append(connection)
             elif node_1[1] in self.Constants.NOUNS:
-                r = self.bfs_triplets(connection, width, dependencies)[1]
+                r = self.bfs_triplets(connection, width, dependencies)[1] #checks for noun dependencies which are indirect 
                 if len(r) >=1 :
-                    short_relations[json.dumps(node_1)] = r
+                    short_relations.append([node_1, r])
         return direct_relations, short_relations, hypernyms
 
 

@@ -3,6 +3,9 @@
 import requests
 
 def treegex_api(patterns, text, url="http://localhost:9000/tregex"):
+    """
+    The Stanford API. This can be easily replaced with the NLTK coreNLP package, which is recommended.
+    """
     pattern = None
     responeses = list()
     for p in patterns:

@@ -7,13 +7,12 @@
 
         {% include 'navbar.html' %}
 
-        <section style="margin-top: 50px;">
+        <section style="margin-top: 50px;" class="spotlight">
             {% if annotations is not none %}
             <div class="container">
                 <div class="row">
-                    <div class="col-lg-6">
-                    <h3>Spotlight Annotations</h3>
-                    <p>
+                    <div class="col-lg-12">
+                    <p style="font-size: 22px; font-family: Times, Times New Roman, serif;">
                         {% for word in range(annotated_text | length) %}
                             {% if annotated_text[word][0] == 0 %}
                                 {{ annotated_text[word][1] }}
@@ -23,6 +22,8 @@
                         {% endfor %}
                     </p>
                     </div>
+                </div>
+                <!-- <div class="row">
                     <div class="col-lg-6">
                         <h4 style="padding-bottom: 10px;">Annotations identified</h4>
                         {% for annotation in annotations %}
@@ -31,9 +32,68 @@
                             </p>
                         {% endfor %}
                     </div>
+                </div> -->
+            </div>
+            {% else %}
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                    <p style="font-size: 22px; font-family: Times, Times New Roman, serif;">
+                        {{ q_text }}
+                    </p>
+                    </div>
                 </div>
             </div>
             {% endif %}
+        </section>
+
+        <section class="triples" style="margin-top: 20px;">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-2">
+                        <b>Subject</b>
+                    </div>
+                    <div class="col-lg-2">
+                        <b>Property</b>
+                    </div>
+                    <div class="col-lg-8">
+                        <b>Value</b>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-lg-2">
+                        <li>Text Object</li>
+                    </div>
+                    <div class="col-lg-2">
+                        <li>Text Abstract</li>
+                    </div>
+                    <div class="col-lg-8">
+                        <li>{{ q_text }}</li>
+                    </div>
+                </div>
+                <hr>
+            {% for triple_count in range(triplets | length) %}
+                <div class="row">
+                    <div class="col-lg-2">
+                        <li>{{ triplets[triple_count][0] }}</li>
+                        {% if annotated_triples %}
+                        <a  href="{{ annotated_triples[triple_count][0][0] }}" style="margin-left: 20px; font-size:10px">dbo</a>
+                        {% endif %} 
+                    </div>
+                    <div class="col-lg-2">
+                        <li>{{ triplets[triple_count][1] }}</li>
+                    </div>
+                    <div class="col-lg-8">
+                        <li>{{ triplets[triple_count][2] }}</li>
+                        {% if annotated_triples %}
+                        <a href="{{ annotated_triples[triple_count][0][0] }}" style="margin-left: 20px; font-size:10px">dbo</a>
+                        {% endif %}  
+                    </div>
+                </div>
+                <hr>
+            {% endfor %}
+            </div>
         </section>
 
         <br>
