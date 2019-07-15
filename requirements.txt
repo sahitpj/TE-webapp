@@ -3,3 +3,4 @@ flask_cors==3.0.7
 gunicorn==19.9.0
 requests~=2.10
 nltk==3.2.5
+spacy==2.1.0
