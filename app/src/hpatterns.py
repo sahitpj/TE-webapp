@@ -4,6 +4,7 @@ sys.path.append("../../..")
 import re
 import string
 import spacy
+import en_core_web_md
 from .conllu.conllu import parse_single, TokenList
 
 class HearstPatterns(object):
@@ -183,7 +184,7 @@ class HearstPatterns(object):
                 ('((NP_\\w+ ?(, )?)+(and |or )?sort of NP_\\w+)', 'last', 'typeOf', 0)
             ])
 
-        self.__spacy_nlp = spacy.load('en')
+        self.__spacy_nlp = en_core_web_md.load()
 
         if greedy:
             self.__hearst_patterns = self.__hearst_patterns_greedy

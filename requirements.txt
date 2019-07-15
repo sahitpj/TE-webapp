@@ -4,3 +4,4 @@ gunicorn==19.9.0
 requests~=2.10
 nltk==3.2.5
 spacy==2.1.0
+https://github.com/explosion/spacy-models/releases/download/en_core_web_md-2.0.0/en_core_web_md-2.0.0.tar.gz#egg=en_core_web_md==2.0.0
