@@ -2,7 +2,7 @@ import sys
 sys.path.append("../..")
 sys.path.append("..")
 
-from pyspotlight import spotlight
+from .pyspotlight import spotlight
 
 
 

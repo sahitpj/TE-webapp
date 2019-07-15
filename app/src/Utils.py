@@ -1,5 +1,5 @@
 from .Constants import Constants
-from .pipelines.spotlight import Spotlight_Pipeline 
+from .spotlight import Spotlight_Pipeline 
 
 constants = Constants()
 spipe = Spotlight_Pipeline()
