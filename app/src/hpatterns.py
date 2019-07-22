@@ -5,6 +5,7 @@ import re
 import string
 import spacy
 from .conllu.conllu import parse_single, TokenList
+from .hpatternUtils import create_default, create_greedy, create_semi
 
 class HearstPatterns(object):
     """
@@ -48,7 +49,7 @@ class HearstPatterns(object):
             (r'NP_(\w+).*?(leader|ruler|king|head).*?of.*?NP_(\w+)', 'first', 'leaderOf', 3),
             (r'NP_(\w+).*?famous.*?for.*?NP_(\w+)', 'first', 'famousFor', 2),
             ('(NP_\\w+ (, )?famous for (NP_\\w+ ? (, )?(and |or )?)+)', 'first', 'FamousFor_multiple', 0),
-        ]
+        ] + create_default()
 
         self.__hearst_patterns_greedy = [
             ('(NP_\\w+ (, )?such as (NP_\\w+ ? (, )?(and |or )?)+)', 'first', 'typeOf', 0),
@@ -136,7 +137,6 @@ class HearstPatterns(object):
             (r'NP_(\w+)[^.]*?(leader|ruler|king|head)[^.]*?of[^.]*?NP_(\w+)', 'first', 'leaderOf', 3),
             (r'NP_(\w+)[^.]*?famous[^.]*?for[^.]*?NP_(\w+)', 'first', 'famousFor', 2),
             ('(NP_\\w+ (, )?famous for (NP_\\w+ ? (, )?(and |or )?)+)', 'first', 'Famousfor_multiple', 0),
-            
         ]
 
         if extended:
@@ -186,13 +186,13 @@ class HearstPatterns(object):
         self.__spacy_nlp = spacy.load('en')
 
         if greedy:
-            self.__hearst_patterns = self.__hearst_patterns_greedy
+            self.__hearst_patterns = self.__hearst_patterns_greedy + create_greedy()
 
         if same_sentence:
             self.__hearst_patterns = self.__hearst_patterns_ss
 
         if semi:
-            self.__hearst_patterns = self.__hearst_patterns_semigreedy
+            self.__hearst_patterns = self.__hearst_patterns_semigreedy + create_semi()
         
     def chunk(self, rawtext):
         STOP_TOKENS = ["the", "a", "an"]
@@ -213,6 +213,30 @@ class HearstPatterns(object):
                         replace_arr.append(''.join(char for char in token.lemma_ if char.isalnum()))
                 chunk_lemma = ' '.join(chunk_arr).lower()
                 replacement_value = 'NP_' + '_'.join(replace_arr).lower()
+                if chunk_lemma:
+                    sentence_text = re.sub(r'\b%s\b' % re.escape(chunk_lemma),
+                                           r'%s' % replacement_value,
+                                           sentence_text)
+            chunks.append(sentence_text)
+        return chunks
+
+    def chunk_root(self, rawtext):
+        doc = self.__spacy_nlp(rawtext)
+        chunks = []
+        for sentence in doc.sents:
+            sentence_text = sentence.lemma_
+            for chunk in sentence.noun_chunks:
+                chunk_arr = []
+                replace_arr = []
+                for token in chunk:
+                    chunk_arr.append(token.lemma_)
+                    # Remove punctuation and stopword adjectives (generally quantifiers of plurals)
+                    if token.lemma_.isalnum() and token.lemma_ not in self.__adj_stopwords:
+                        replace_arr.append(token.lemma_)
+                    elif not token.lemma_.isalnum():
+                        replace_arr.append(''.join(char for char in token.lemma_ if char.isalnum()))
+                chunk_lemma = ' '.join(chunk_arr)
+                replacement_value = 'NP_' + '_'.join(replace_arr)
                 if chunk_lemma:
                     sentence_text = re.sub(r'\b%s\b' % re.escape(chunk_lemma),
                                            r'%s' % replacement_value,
@@ -277,6 +301,45 @@ class HearstPatterns(object):
 
         for sentence in np_tagged_sentences:
             # two or more NPs next to each other should be merged into a single NP, it's a chunk error
+            for (hearst_pattern, parser, hearst_type, process_type) in self.__hearst_patterns[:-1]:
+                matches = re.search(hearst_pattern, sentence)
+                if matches:
+                    match_str = matches.group(0)
+
+                    if process_type == 0:
+                        nps = [a for a in match_str.split() if a.startswith("NP_")]
+
+                        if parser == "first":
+                            general = nps[0]
+                            specifics = nps[1:]
+                        else:
+                            general = nps[-1]
+                            specifics = nps[:-1]
+
+                        for i in range(len(specifics)):
+                            #print("%s, %s %s" % (specifics[i], general, hearst_type))
+                            hearst_patterns.append((self.clean_hyponym_term(specifics[i]), self.clean_hyponym_term(general), hearst_type))
+
+                    else:
+                        if parser == "first":
+                            general = matches.group(1)
+                            specifics = [matches.group(i) for i in range(2,process_type+1)]
+                        else:
+                            general = matches.group(process_type)
+                            specifics = [matches.group(i) for i in range(1,process_type)]
+
+                        #print("%s, %s %s" % (specifics[i], general, hearst_type))
+                        hearst_patterns.append((specifics, general, hearst_type, parser))
+
+        return hearst_patterns
+
+    def find_hearstpatterns_spacy_root(self, rawtext):
+
+        hearst_patterns = []
+        np_tagged_sentences = self.chunk_root(rawtext)
+
+        for sentence in np_tagged_sentences:
+            # two or more NPs next to each other should be merged into a single NP, it's a chunk error
             for (hearst_pattern, parser, hearst_type, process_type) in self.__hearst_patterns:
                 matches = re.search(hearst_pattern, sentence)
                 if matches:
@@ -309,7 +372,16 @@ class HearstPatterns(object):
 
         return hearst_patterns
 
+    def add_patterns(self, patterns, type):
+        if type == 'Default':
+            self.__hearst_patterns.extend(patterns)
+        elif type == 'Non-greedy':
+            self.__hearst_patterns_greedy.extend(patterns)
+        else:
+            self.__hearst_patterns_semigreedy.extend(patterns)
+
 
     def clean_hyponym_term(self, term):
         # good point to do the stemming or lemmatization
         return term.replace("NP_","").replace("_", " ")
+

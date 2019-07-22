@@ -58,3 +58,16 @@ html {
       color: black;
   }
 
+/*                 */
+/* config page CSS */
+/*                 */
+
+.add-hearst textarea {
+  width: 100%;
+  height: 370px;
+}
+
+.hearst-ex {
+  font-size: 15px;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}

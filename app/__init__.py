@@ -6,3 +6,4 @@ CORS(app_flask, support_credentials=True)
 
 # app_flask.secret_key = b'fdjjkgnuierhfuihuihedi'
 from app import routes
+from app import config_routes

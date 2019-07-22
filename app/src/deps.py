@@ -17,7 +17,8 @@ dep_parser = CoreNLPDependencyParser(url='http://localhost:9000')
 
 class TripleExtraction_Deps(object):
 
-    def __init__(self, filepath_to_conll=None):
+    def __init__(self, filepath_to_conll=None, deps_level=None):
+        self.deps_level = deps_level
         self.filepath_to_conll = None
         self.tokenlist = None
         self.tokenTree = None
@@ -90,9 +91,37 @@ class TripleExtraction_Deps(object):
                 r = self.bfs_triplets(connection, width, dependencies)[1] #checks for noun dependencies which are indirect 
                 if len(r) >=1 :
                     short_relations.append([node_1, r])
-        return direct_relations, short_relations, hypernyms
+        prepositions = list()
+        for r in short_relations:
+            n2 = r[1][-1][-1]
+            prepositions_list = self.get_prepositions(n2, dependencies)
+            prepositions.append(prepositions_list)
+        return direct_relations, short_relations, hypernyms, prepositions
+
+    def get_prepositions(self, start_node, dependencies):
+        count = 0
+        queue = [start_node]
+        queue_level = [0]
+        preposition_dependencies = list()
+        while queue != []:
+            node = queue[0]
+            queue = queue[:-1]
+            level_current = queue_level[0]
+            queue_level = queue_level[:-1]
+            for dep in dependencies:
+                dep_node_1 = dep[0]
+                if dep_node_1 == node and level_current < 1:
+                    if dep[1] in self.Constants.preposition_relations:
+                        queue.append(dep[2])
+                        queue_level.append(level_current+1)
+                        preposition_dependencies.append(dep)
+        print(preposition_dependencies)
+        return preposition_dependencies        
 
 
+class TripleExtraction_Deps_SS(TripleExtraction_Deps):
+    def __init__(self, filepath_to_conll=None, deps_level=None):
+        super().__init__(filepath_to_conll=None, deps_level=None)
 
 
 if __name__=="__main__" :

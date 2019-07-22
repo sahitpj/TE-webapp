@@ -1,0 +1,164 @@
+<html>
+    
+    {% include 'head.html' %}
+
+
+    <body>
+
+        {% include 'navbar.html' %}
+
+        <section style="margin-top:40px;">
+            <div class="container">
+                <h1>Configuration Page</h1>
+                <p>The configuration page allows a user to manually configure the DBpediaExtract application, this
+                    includes the below options. To understand more about configuring the application, visit the 
+                    About Configuration part.
+                </p>
+                <a href="#about-configuration" class="btn btn-secondary button m" role="button">About Configuration</a>
+                <hr>
+                <form action="/config-search" method="post" novalidate="novalidate" id="config">
+                    <div class="row">
+                        <h3>&nbsp;&nbsp;Add Hearst Patterns</h3>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <div class="add-hearst">
+                                <textarea name="hearst-patterns" form="config"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <p class="hearst-ex">Add your hearst patterns in the following pattern (semi-colon separated):-</p>
+                            <p class="hearst-ex">({verb_preposition}, first/last)</p>
+                            <p class="hearst-ex">Ex - (founder_of, first)</p>
+                            <p>For more about Hearst pattern configuration</p>
+                            <a href="#about-configuration" class="btn btn-secondary button m" role="button">Hearst Configuration</a>
+                            <hr>
+                            <input type="checkbox" name="allow_given_hearst">&nbsp;&nbsp;Also use predefined Hearst Patterns<br>
+                            <div class="group" style="margin-top:20px;">
+                                <label for="sel1">Select Patterns:</label>
+                                <select class="form-control" id="sel1" name="pattern-method">
+                                    <option>Default</option>
+                                    <option>Non-greedy</option>
+                                    <option>Semi-greedy</option>
+                                </select><br>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row" style="margin-top:20px;">
+                        <div class="col-lg-4">
+                            <div class="group">
+                                <label for="sel2"><h3>Use Parse-Tree Method</h3></label>
+                                <select class="form-control" id="sel2" name="parse-tree">
+                                    <option>No</option>
+                                    <option>Yes</option>
+                                </select><br>
+                            </div>
+                        </div>
+                        <div class="col-lg-8" style="margin-top:35px;">
+                            <p>To know more about what Parse-Tree patterns, Dependencies, check out the following</p>
+                            <a href="/#methods" class="btn btn-secondary button m" role="button">About Methods</a>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top:20px;">
+                        <h3>&nbsp;&nbsp;Add Dependencies Configuration</h3>
+                    </div>
+                    <div class="row" style="margin-top:20px;"">
+                        <div class="col-lg-4">
+                            <div class="group1">
+                                <label for="sel3">Use Dependencies Method</label>
+                                <select class="form-control" id="sel3" name="use-dependencies">
+                                    <option>No</option>
+                                    <option>Yes</option>
+                                </select><br>
+                            </div>
+                        </div>
+                        <div class="col-lg-4" style="margin-top:30px;">
+                            <div class="dependencies-number" style="display: none;">
+                                <input type="text" id="dependencies-number" name="dependencies-number" placeholder="Dependency Level" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <label for="sel4"><h3>Use Spotlight Annotations</h3></label>
+                            <select class="form-control" id="sel4" name="spotlight">
+                                <option>No</option>
+                                <option>Yes</option>
+                            </select><br>
+                        </div>
+                    </div>
+                    <div class="row tool-area">
+                        <h4>Text</h4><br>
+                        <textarea name="comment" form="config">First documented in the 13th century, Berlin was the capital of the Kingdom of Prussia (1701–1918), the German Empire (1871–1918), the Weimar Republic (1919–33) and the Third Reich (1933–45). Berlin in the 1920s was the third largest municipality in the world. After World War II, the city became divided into East Berlin -- the capital of East Germany -- and West Berlin, a West German exclave surrounded by the Berlin Wall from 1961–89. Following German reunification in 1990, the city regained its status as the capital of Germany, hosting 147 foreign embassies.</textarea>
+                    </div>
+                    <div class="row" style="margin-left: 10px;">
+                        <button class="btn btn-primary button" type="submit" style="margin-top: 20px;">Get Triplets with above configuration</button>
+                    </div>
+                    <hr>
+                    <hr>
+                </form>
+            </div>
+        </section>
+        <section style="margin-top:40px;">
+            <div class="container" id="about-configuration">
+                <h2>About Configuration</h2>
+                <div class="row">
+                    <div class="col-lg-3">
+                        Hearst Patterns
+                    </div>
+                    <div class="col-lg-9">
+                        Hearst Patterns can be defined as lexical-syntactic patterns. Here we use them to extract our n-triples by using them as patterns. Since
+                        we define them as regex patterns, our main word to be finding should be PREDICATE. This can be present in either of the two forms:- 
+                        <li>The specific predicate itself or</li>
+                        <li>An easier way - verb+preposition</li>
+                        <br>
+                        This can then be mapped to a DBpedia property, while annotating. The second parameter is the first/last which denotes
+                        if the before word captured is the SUBJECT or the last one.
+                    </div>
+                </div>
+                <hr>
+                <div class="row" style="margin-top:15px;">
+                    <div class="col-lg-3">
+                        Parse-Tree
+                    </div>
+                    <div class="col-lg-9">
+                        Nothing which can be configured here.
+                    </div>
+                </div>
+                <hr>
+                <div class="row" style="margin-top:15px;">
+                    <div class="col-lg-3">
+                        Dependencies
+                    </div>
+                    <div class="col-lg-9">
+                        The Dependency level dettermines how close two words (SUBJECT-OBJECT) are related, through the PREDICATE. 
+                        The higher the level, the lesser confidence. <br>
+                        The minimum which can be set is 1, which would you provide you with hypernyms. 2 or more will provide you with Depdency triples. 
+                        The default value being used is 2.
+                    </div>
+                </div>
+                <hr>
+            </div>
+        </section>
+        <br>
+        {% include 'footerbar.html' %}
+    </body>
+
+    <script>
+        var methods = document.getElementsByName("use-dependencies")[0];
+        var element = document.getElementsByClassName("dependencies-number")[0]
+
+        methods.addEventListener('change', function(){
+            if(this.value == 'Yes') {
+                console.log(10);
+                element.style.display = 'block';
+            }
+            
+            else {
+                element.style.display = 'none';
+            }
+        })
+
+    </script>
+</html>
