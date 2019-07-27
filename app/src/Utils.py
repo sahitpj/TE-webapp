@@ -5,7 +5,6 @@ from nltk.stem import PorterStemmer
 
 constants = Constants()
 properties = Properties()
-spipe = Spotlight_Pipeline()
 ps = PorterStemmer()
 
 def hearst_get_triplet(hearst_pattern):
@@ -55,7 +54,8 @@ def short_relations_clean(short_relation, prepositions):
             relations.append((SUBJECT, Properties.DELIMITER.join([ps.stem(predicate), get_preposition(preposition)]), OBJECT))
     return relations
         
-def annotate_triple(triple):
+def annotate_triple(triple, language):
+    spipe = Spotlight_Pipeline(language)
     SUBJECT = None
     PREDICATE = None
     OBJECT = None

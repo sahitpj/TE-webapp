@@ -372,10 +372,10 @@ class HearstPatterns(object):
 
         return hearst_patterns
 
-    def add_patterns(self, patterns, type):
-        if type == 'Default':
+    def add_patterns(self, patterns, t):
+        if t == 'Default':
             self.__hearst_patterns.extend(patterns)
-        elif type == 'Non-greedy':
+        elif t == 'Non-greedy':
             self.__hearst_patterns_greedy.extend(patterns)
         else:
             self.__hearst_patterns_semigreedy.extend(patterns)

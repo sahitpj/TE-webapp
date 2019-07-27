@@ -4,15 +4,17 @@ from flask_cors import CORS, cross_origin
 from app import app_flask
 from .src.pyspotlight import spotlight
 from .src.hpatterns import HearstPatterns
-from .src.hpatternUtils import parse_hearst_patterns
+from .src.hpatternUtils import parse_hearst_patterns, add_hearst_patterns
 from .src.Utils import hearst_get_triplet, hypernym_clean, directRelation_clean, short_relations_clean, annotate_triple
-from .src.treegex import TripleExtraction
+from .src.parseTree import TripleExtraction
 from .src.deps import TripleExtraction_Deps, TripleExtraction_Deps_SS
+from .src.multiLang import TripleExtraction_Deps_Lang, TripleExtraction_Lang
+from .src.spotlight import Spotlight_Pipeline
 from nltk.tokenize import sent_tokenize
 import nltk
 
-spotlight_config = spotlight.Config()
-spotlight_address = spotlight_config.spotlight_address
+# spotlight_config = spotlight.Config()
+# spotlight_address = spotlight_config.spotlight_address
 
 HEARST_PATTERNS_METHODS = ['Default', 'Non-greedy', 'Semi-greedy']
 
@@ -29,6 +31,8 @@ def getConfigResults():
     q_dependency_num = request.form.get("dependencies-number")
     q_text = request.form.get("comment")
     q_spotlight = request.form.get("spotlight")
+    q_hearst_input = request.form.get("hearst-input-type")
+    q_language = request.form.get("language")
 
     hearst_patterns = request.form.get("hearst-patterns")
 
@@ -38,7 +42,8 @@ def getConfigResults():
     annotated_text = list()
 
     if q_spotlight == 'Yes':
-        annotations = spotlight.annotate(spotlight_address,
+        spipe = Spotlight_Pipeline(q_language)
+        annotations = spipe.annotate(spotlight_address,
                                         q_text)
         ptr = 0
         flag = 0
@@ -57,7 +62,7 @@ def getConfigResults():
         patterns1 = None
         patterns2 = None
         if q_hearst_pattern_type == HEARST_PATTERNS_METHODS[0]:
-            addn_patterns = parse_hearst_patterns(hearst_patterns)
+            addn_patterns = add_hearst_patterns(parse_hearst_patterns(hearst_patterns), q_hearst_pattern_type, q_hearst_input)
             hpatterns1 = HearstPatterns(extended = True, same_sentence = True)
             hpatterns1.add_patterns(addn_patterns, q_hearst_pattern_type)
             hpatterns2 = HearstPatterns(extended = True, same_sentence = False)
@@ -67,7 +72,7 @@ def getConfigResults():
             print(patterns1, patterns2)
             
         elif q_hearst_pattern_type == HEARST_PATTERNS_METHODS[1]:
-            addn_patterns = parse_hearst_patterns(hearst_patterns)
+            addn_patterns = add_hearst_patterns(parse_hearst_patterns(hearst_patterns), q_hearst_pattern_type, q_hearst_input)
             hpatterns1 = HearstPatterns(extended = True, same_sentence = True, greedy = True)
             hpatterns1.add_patterns(addn_patterns, q_hearst_pattern_type)
             hpatterns2 = HearstPatterns(extended = True, same_sentence = False, greedy = True)
@@ -75,7 +80,7 @@ def getConfigResults():
             patterns1 = [ hearst_get_triplet(pattern) for pattern in hpatterns1.find_hearstpatterns_spacy(q_text)]
             patterns2 = [ hearst_get_triplet(pattern) for pattern in hpatterns2.find_hearstpatterns_spacy(q_text)]
         else:
-            addn_patterns = parse_hearst_patterns(hearst_patterns)
+            addn_patterns = add_hearst_patterns(parse_hearst_patterns(hearst_patterns), q_hearst_pattern_type, q_hearst_input)
             hpatterns1 = HearstPatterns(extended = True, same_sentence = True, semi = True)
             hpatterns1.add_patterns(addn_patterns, q_hearst_pattern_type)
             hpatterns2 = HearstPatterns(extended = True, same_sentence = False, semi = True)
@@ -86,18 +91,31 @@ def getConfigResults():
         triples += patterns1 + patterns2
 
     if q_use_parse_tree == 'Yes':
-        text_extraction = TripleExtraction()
-        triplets = list()
-        for sentence in sent_tokenize(q_text):
-            triple = text_extraction.treebank(sentence)
-            triplets.append(triple)
-        print(triplets)
-        triples += triplets
+        if q_language == 'English':
+            text_extraction = TripleExtraction()
+            triplets = list()
+            for sentence in sent_tokenize(q_text):
+                triple = text_extraction.treebank(sentence)
+                triplets.append(triple)
+            print(triplets)
+            triples += triplets
+        else:
+            text_extraction = TripleExtraction_Lang(q_language)
+            triplets = list()
+            for sentence in sent_tokenize(q_text):
+                triple = text_extraction.treebank(sentence)
+                triplets.append(triple)
+            print(triplets)
+            triples += triplets
+
 
     if q_use_dependencies == 'Yes':
         NOUN_RELATIONS = ['nmod', 'hypernym (low confidence)']
-
-        text_extraction = TripleExtraction_Deps()
+        text_extraction = None
+        if q_language == 'English':
+            text_extraction = TripleExtraction_Deps()
+        else:
+            text_extraction = TripleExtraction_Deps_Lang(q_language)
         triplets = list()
         sr = list()
         sr_preps = list()
@@ -121,8 +139,9 @@ def getConfigResults():
     
     annotated_triples = None
     if q_spotlight == 'Yes':
+        spipe = Spotlight_Pipeline(q_language)
         annotated_triples = list()
         for triple in triples:
-            annotated_triples.append(annotate_triple(triple))
+            annotated_triples.append(spipe.annotate_triple(triple))
 
     return render_template('triplets.html', annotations=annotations, annotated_text=annotated_text, triplets=triples, q_text=q_text, annotated_triples=annotated_triples)

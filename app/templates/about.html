@@ -1,0 +1,57 @@
+<html>
+        {% include 'head.html' %}
+
+
+        <body>
+    
+            {% include 'navbar.html' %}
+            
+
+
+            <section style="margin-top:40px;">
+                <div class="container" id="about-configuration">
+                    <h2>About Configuration</h2>
+                    <div class="row">
+                        <div class="col-lg-3">
+                            Hearst Patterns
+                        </div>
+                        <div class="col-lg-9">
+                            Hearst Patterns can be defined as lexical-syntactic patterns. Here we use them to extract our n-triples by using them as patterns. Since
+                            we define them as regex patterns, our main word to be finding should be PREDICATE. This can be present in either of the two forms:- 
+                            <li>An easier way - verb+preposition</li>
+                            <li>Explicit hearst pattern (regex) itself</li>
+                            <br>
+                            verb+prep must be given in the following format
+                            <p class="hearst-ex">({verb_preposition}, first/last, dbpedia_property(optional))</p>
+                            <p class="hearst-ex">Ex - (broadcast_on, first, http://dbpedia.org/ontology/frequency)</p>
+                            This can then be mapped to a DBpedia property, while annotating. The second parameter is the first/last which denotes
+                            if the before word captured is the SUBJECT or the last one.
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row" style="margin-top:15px;">
+                        <div class="col-lg-3">
+                            Parse-Tree
+                        </div>
+                        <div class="col-lg-9">
+                            Nothing which can be configured here.
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row" style="margin-top:15px;">
+                        <div class="col-lg-3">
+                            Dependencies
+                        </div>
+                        <div class="col-lg-9">
+                            The Dependency level dettermines how close two words (SUBJECT-OBJECT) are related, through the PREDICATE. 
+                            The higher the level, the lesser confidence. <br>
+                            The minimum which can be set is 1, which would you provide you with hypernyms. 2 or more will provide you with Depdency triples. 
+                            The default value being used is 2.
+                        </div>
+                    </div>
+                    <hr>
+                </div>
+            </section>
+
+        </body>
+</html>

@@ -14,7 +14,14 @@
                     includes the below options. To understand more about configuring the application, visit the 
                     About Configuration part.
                 </p>
-                <a href="#about-configuration" class="btn btn-secondary button m" role="button">About Configuration</a>
+                <a href="/about" class="btn btn-secondary button m" role="button">About Configuration</a>
+                <br><label style="margin-top: 10px;" for="sel5">Select Language:</label> (Note - the existing hearst patterns are only of English)
+                <select style="max-width: 160px;" class="form-control" id="sel5" name="language">
+                    <option>English</option>
+                    <option>Spanish</option>
+                    <option>German</option>
+                    <option>French</option>
+                </select><br>
                 <hr>
                 <form action="/config-search" method="post" novalidate="novalidate" id="config">
                     <div class="row">
@@ -27,13 +34,21 @@
                             </div>
                         </div>
                         <div class="col-lg-4">
-                            <p class="hearst-ex">Add your hearst patterns in the following pattern (semi-colon separated):-</p>
+                            <label for="sel0">Select Input Hearst Type:</label>
+                            <select class="form-control" id="sel0" name="hearst-input-type">
+                                <option>verb+prep</option>
+                                <option>Regex pattern</option>
+                            </select><br>
+                            <!-- <p class="hearst-ex">Add your hearst patterns in the following pattern (semi-colon separated):-</p>
                             <p class="hearst-ex">({verb_preposition}, first/last)</p>
-                            <p class="hearst-ex">Ex - (founder_of, first)</p>
+                            <p class="hearst-ex">Ex - (founder_of, first)</p> -->
                             <p>For more about Hearst pattern configuration</p>
-                            <a href="#about-configuration" class="btn btn-secondary button m" role="button">Hearst Configuration</a>
+                            <a href="/about" class="btn btn-secondary button m" role="button">Hearst Configuration</a>
                             <hr>
-                            <input type="checkbox" name="allow_given_hearst">&nbsp;&nbsp;Also use predefined Hearst Patterns<br>
+                            <input type="checkbox" name="allow_given_hearst">&nbsp;&nbsp;Also use predefined Hearst patterns<br><br>
+                            <button type="button" class="btn btn-secondary" data-toggle="tooltip" data-placement="bottom" title="Tooltip on bottom">
+                                Examples
+                            </button>
                             <div class="group" style="margin-top:20px;">
                                 <label for="sel1">Select Patterns:</label>
                                 <select class="form-control" id="sel1" name="pattern-method">
@@ -96,55 +111,13 @@
                         <button class="btn btn-primary button" type="submit" style="margin-top: 20px;">Get Triplets with above configuration</button>
                     </div>
                     <hr>
-                    <hr>
                 </form>
             </div>
         </section>
-        <section style="margin-top:40px;">
-            <div class="container" id="about-configuration">
-                <h2>About Configuration</h2>
-                <div class="row">
-                    <div class="col-lg-3">
-                        Hearst Patterns
-                    </div>
-                    <div class="col-lg-9">
-                        Hearst Patterns can be defined as lexical-syntactic patterns. Here we use them to extract our n-triples by using them as patterns. Since
-                        we define them as regex patterns, our main word to be finding should be PREDICATE. This can be present in either of the two forms:- 
-                        <li>The specific predicate itself or</li>
-                        <li>An easier way - verb+preposition</li>
-                        <br>
-                        This can then be mapped to a DBpedia property, while annotating. The second parameter is the first/last which denotes
-                        if the before word captured is the SUBJECT or the last one.
-                    </div>
-                </div>
-                <hr>
-                <div class="row" style="margin-top:15px;">
-                    <div class="col-lg-3">
-                        Parse-Tree
-                    </div>
-                    <div class="col-lg-9">
-                        Nothing which can be configured here.
-                    </div>
-                </div>
-                <hr>
-                <div class="row" style="margin-top:15px;">
-                    <div class="col-lg-3">
-                        Dependencies
-                    </div>
-                    <div class="col-lg-9">
-                        The Dependency level dettermines how close two words (SUBJECT-OBJECT) are related, through the PREDICATE. 
-                        The higher the level, the lesser confidence. <br>
-                        The minimum which can be set is 1, which would you provide you with hypernyms. 2 or more will provide you with Depdency triples. 
-                        The default value being used is 2.
-                    </div>
-                </div>
-                <hr>
-            </div>
-        </section>
+        
         <br>
         {% include 'footerbar.html' %}
     </body>
-
     <script>
         var methods = document.getElementsByName("use-dependencies")[0];
         var element = document.getElementsByClassName("dependencies-number")[0]
@@ -159,6 +132,10 @@
                 element.style.display = 'none';
             }
         })
+
+        $(document).ready(function(){
+            $('[data-toggle="tooltip"]').tooltip();   
+        });
 
     </script>
 </html>
