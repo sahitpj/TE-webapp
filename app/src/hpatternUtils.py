@@ -6,13 +6,14 @@ import re
 props = Properties()
 ps = PorterStemmer()
 
-def parse_hearst_patterns(q_hearst_patterns):
+def parse_hearst_patterns(q_hearst_patterns, q_hearst_input):
     patterns = [ r[1:-1].split(',') for r in  q_hearst_patterns.split(';') ] #delimter for the input hearst patterns
     return patterns
 
-def add_hearst_patterns(template, t):
+
+def add_hearst_patterns(templates, t, q_hearst_input):
     """
-    Template is of the form 
+    1. Template is of the form 
     ({verb+preposition}, first/last)
     The pattern is then converted into its' type which can be 
         - default
@@ -20,22 +21,31 @@ def add_hearst_patterns(template, t):
         - semi-greedy
 
     The first/last part is added as a regex parameter
+
+    2. Template is where the direct required template format is inputted.
+    in such a case the templates are directly returned
     """
-    try:
-        verb, proposition = template[0].split("_") # "_" is the default delimiter, mentioned in the Properties class
-    except:
-        raise RuntimeError("delimiter is not set to the proper value, check the properties file")
+    if q_hearst_input =='verb+prep':
+        hearst_patterns = list()
+        for template in templates:
+            try:
+                verb, proposition = template[0].split("_") # "_" is the default delimiter, mentioned in the Properties class
+            except:
+                raise RuntimeError("delimiter is not set to the proper value, check the properties file")
 
-    pattern = None
-    if t == 'Default':
-        pattern = r'NP_(\w+).*?({}).*?{}.*?.*?NP_(\w+)'.format(verb, preposition)
-    elif t == 'Non-Greedy':
-        pattern = r'.*NP_(\w+).*?({}).*?{}.*?NP_(\w+)'.format(verb, preposition)
+            pattern = None
+            if t == 'Default':
+                pattern = r'NP_(\w+).*?({}).*?{}.*?.*?NP_(\w+)'.format(verb, preposition)
+            elif t == 'Non-Greedy':
+                pattern = r'.*NP_(\w+).*?({}).*?{}.*?NP_(\w+)'.format(verb, preposition)
+            else:
+                pattern = r'.*?NP_(\w+).*?({}).*?{}.*?NP_(\w+)'.format(verb, preposition)
+
+            heart_pattern = (pattern, template[1], verb+preposition.capitalize(), 3)
+            hearst_patterns.append(heart_pattern)
+        return hearst_patterns
     else:
-        pattern = r'.*?NP_(\w+).*?({}).*?{}.*?NP_(\w+)'.format(verb, preposition)
-
-    heart_pattern = (pattern, template[1], verb+preposition.capitalize(), 3)
-    return heart_pattern
+        return templates
 
 
 def create_default():

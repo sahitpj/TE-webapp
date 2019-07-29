@@ -6,7 +6,7 @@ from .src.pyspotlight import spotlight
 from .src.hpatterns import HearstPatterns
 from .src.Utils import hearst_get_triplet, hypernym_clean, directRelation_clean, short_relations_clean, annotate_triple
 from .src.hpatternUtils import annotate_predicate_ps, clean_hearst_triple
-from .src.treegex import TripleExtraction
+from .src.parseTree import TripleExtraction
 from .src.deps import TripleExtraction_Deps
 from nltk.tokenize import sent_tokenize
 import nltk
@@ -22,6 +22,10 @@ HEARST_PATTERNS_METHODS = ['Default', 'Non-greedy', 'Semi-greedy']
 def index():
     return render_template('index.html')
 
+
+@app_flask.route('/about', methods=['GET'])
+def getAbout():
+    return render_template('about.html')
 
 @app_flask.route('/search', methods = ['GET', 'POST'])
 def search():
