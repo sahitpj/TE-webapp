@@ -15,6 +15,7 @@
                     About Configuration part.
                 </p>
                 <a href="/about" class="btn btn-secondary button m" role="button">About Configuration</a>
+                <form action="/config-search" method="post" novalidate="novalidate" id="config">
                 <br><label style="margin-top: 10px;" for="sel5">Select Language:</label> (Note - the existing hearst patterns are only of English)
                 <select style="max-width: 160px;" class="form-control" id="sel5" name="language">
                     <option>English</option>
@@ -23,7 +24,6 @@
                     <option>French</option>
                 </select><br>
                 <hr>
-                <form action="/config-search" method="post" novalidate="novalidate" id="config">
                     <div class="row">
                         <h3>&nbsp;&nbsp;Add Hearst Patterns</h3>
                     </div>
