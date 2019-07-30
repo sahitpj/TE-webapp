@@ -36,7 +36,7 @@ class Spotlight_Pipeline(object):
             return word
 
 
-    def annotate_triple(self, triple):
+    def annotate_triple(self, triple, addn_props):
         SUBJECT = None
         PREDICATE = None
         OBJECT = None
@@ -72,11 +72,14 @@ class Spotlight_Pipeline(object):
         
         else:
             try:
-                num_list = properties.properties[triple[1]]
-                PREDICATE = properties.ontologies_list[num_list[0]]
-
+                PREDICATE = addn_props[triple[1]]
             except:
-                None
+                try:
+                    num_list = properties.properties[triple[1]]
+                    PREDICATE = properties.ontologies_list[num_list[0]]
+                except:
+                    None
+
             
         return (SUBJECT, PREDICATE, OBJECT)
     

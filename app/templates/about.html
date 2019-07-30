@@ -26,6 +26,12 @@
                             <p class="hearst-ex">Ex - (broadcast_on, first, http://dbpedia.org/ontology/frequency)</p>
                             This can then be mapped to a DBpedia property, while annotating. The second parameter is the first/last which denotes
                             if the before word captured is the SUBJECT or the last one.
+                            <br><br>
+                            The <b>regex pattern</b> on the other hand must be given in the following template<br>
+                            (regex, verb+prep, (first/last), id, annotation) 
+                            <p>Here first/last represenst if the subject is first or last in the pattermn</p>
+                            <p>id is for the number of object to be identifed, default is 2</p><br>
+                            <b>NOTE - incorrect template format, may or may not throw an exception</b>
                         </div>
                     </div>
                     <hr>

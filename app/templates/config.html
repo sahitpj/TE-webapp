@@ -30,7 +30,7 @@
                     <div class="row">
                         <div class="col-lg-8">
                             <div class="add-hearst">
-                                <textarea name="hearst-patterns" form="config"></textarea>
+                                <textarea name="hearst-patterns" form="config">(broadcast_on, first, http://dbpedia.org/ontology/frequency);(air_on, first, http://dbpedia.org/ontology/channel)</textarea>
                             </div>
                         </div>
                         <div class="col-lg-4">
@@ -62,20 +62,19 @@
                     <hr>
                     <div class="row" style="margin-top:20px;">
                         <div class="col-lg-4">
-                            <div class="group">
-                                <label for="sel2"><h3>Use Parse-Tree Method</h3></label>
-                                <select class="form-control" id="sel2" name="parse-tree">
-                                    <option>No</option>
-                                    <option>Yes</option>
-                                </select><br>
+                            <div style="margin-left: 20px; margin-top:20px;">
+                                <input style="zoom:2;" class="form-check-input" type="checkbox" value="" id="defaultCheck1" name="parse-tree">
+                                <label class="form-check-label" for="defaultCheck1">
+                                    <h3>&nbsp;&nbsp;Use Parse-Tree Method</h3>
+                                </label>
                             </div>
                         </div>
-                        <div class="col-lg-8" style="margin-top:35px;">
+                        <div class="col-lg-8" style="margin-top:20px;">
                             <p>To know more about what Parse-Tree patterns, Dependencies, check out the following</p>
                             <a href="/#methods" class="btn btn-secondary button m" role="button">About Methods</a>
                         </div>
                     </div>
-                    <div class="row" style="margin-top:20px;">
+                    <div class="row" style="margin-top:25px;">
                         <h3>&nbsp;&nbsp;Add Dependencies Configuration</h3>
                     </div>
                     <div class="row" style="margin-top:20px;"">
@@ -96,14 +95,15 @@
                     </div>
                     <div class="row">
                         <div class="col-lg-4">
-                            <label for="sel4"><h3>Use Spotlight Annotations</h3></label>
-                            <select class="form-control" id="sel4" name="spotlight">
-                                <option>No</option>
-                                <option>Yes</option>
-                            </select><br>
+                        <div style="margin-left: 20px;">
+                            <input style="zoom:2;" class="form-check-input" type="checkbox" value="" id="defaultCheck1" name="spotlight">
+                            <label class="form-check-label" for="defaultCheck1">
+                                <h3>&nbsp;&nbsp;Spotlight Annotations</h3>
+                            </label>
+                        </div>
                         </div>
                     </div>
-                    <div class="row tool-area">
+                    <div class="row tool-area" style="margin-top:10px;">
                         <h4>Text</h4><br>
                         <textarea name="comment" form="config">First documented in the 13th century, Berlin was the capital of the Kingdom of Prussia (1701–1918), the German Empire (1871–1918), the Weimar Republic (1919–33) and the Third Reich (1933–45). Berlin in the 1920s was the third largest municipality in the world. After World War II, the city became divided into East Berlin -- the capital of East Germany -- and West Berlin, a West German exclave surrounded by the Berlin Wall from 1961–89. Following German reunification in 1990, the city regained its status as the capital of Germany, hosting 147 foreign embassies.</textarea>
                     </div>
@@ -136,6 +136,20 @@
         $(document).ready(function(){
             $('[data-toggle="tooltip"]').tooltip();   
         });
+
+        var hearstTextArea = document.getElementsByName("hearst-patterns")[0];
+        var hearst_type = document.getElementsByName("hearst-input-type")[0];
+
+        hearst_type.addEventListener('change', function(){
+            if(this.value == 'verb+prep') {
+                console.log(10);
+                hearstTextArea.innerHTML = '(broadcast_on,first,http://dbpedia.org/ontology/frequency);(air_on,first,http://dbpedia.org/ontology/channel)';
+            }
+            
+            else {
+                hearstTextArea.innerHTML = "(r'NP_(\w+).*?(broadcast).*?on.*?NP_(\w+)',first,broadcastOn,3,http://dbpedia.org/ontology/frequency);(r'NP_(\w+).*?(air).*?on.*?NP_(\w+)',first,airOn,3,http://dbpedia.org/ontology/channel)";
+            }
+        })        
 
     </script>
 </html>

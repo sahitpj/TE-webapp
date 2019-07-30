@@ -210,7 +210,10 @@ class HearstPatterns(object):
                     if token.lemma_.isalnum() and token.lemma_ not in self.__adj_stopwords and token.text not in STOP_TOKENS:
                         replace_arr.append(token.lemma_)
                     elif not token.lemma_.isalnum() and token.text not in STOP_TOKENS:
-                        replace_arr.append(''.join(char for char in token.lemma_ if char.isalnum()))
+                        if token.lemma_ != '-PRON-':
+                            replace_arr.append(''.join(char for char in token.lemma_ if char.isalnum()))
+                        else:
+                            replace_arr.append(token.text)
                 chunk_lemma = ' '.join(chunk_arr).lower()
                 replacement_value = 'NP_' + '_'.join(replace_arr).lower()
                 if chunk_lemma:
