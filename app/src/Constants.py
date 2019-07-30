@@ -12,9 +12,9 @@ class Constants(object):
 
     LANGUAGES = ['English', 'Spanish', 'German', 'French']
 
-    spotlight_french_endpoint = "http://api.dbpedia-spotlight.org/fr/annotate"
-    spotlight_german_endpoint = "http://api.dbpedia-spotlight.org/de/annotate"
-    spotlight_spanish_endpoint = "http://api.dbpedia-spotlight.org/es/annotate"
+    spotlight_french_endpoint = "http://localhost:2225/rest/annotate"
+    spotlight_german_endpoint = "http://localhost:2226/rest/annotate"
+    spotlight_spanish_endpoint = "http://localhost:2231/rest/annotate"
 
     def __init__(self):
         self.VERBS = ['VB', 'VBD', 'VBG', 'VBN', 'VBP', 'VBZ']
