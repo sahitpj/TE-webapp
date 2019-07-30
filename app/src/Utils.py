@@ -13,8 +13,11 @@ def hearst_get_triplet(hearst_pattern):
     SUBJECT = hearst_pattern[-3]
     if hearst_pattern[-1] == 'first':
         OBJECT = hearst_pattern[0][-1]
-    else:
+    elif hearst_pattern[-1] == 'last':
         OBJECT = hearst_pattern[0][0]
+    else:
+        OBJECT = hearst_pattern[-2]
+        PREDICATE = hearst_pattern[-1]
     return (SUBJECT, PREDICATE, OBJECT)
 
 def hypernym_clean(hypernym):
@@ -54,8 +57,8 @@ def short_relations_clean(short_relation, prepositions):
             relations.append((SUBJECT, Properties.DELIMITER.join([ps.stem(predicate), get_preposition(preposition)]), OBJECT))
     return relations
         
-def annotate_triple(triple, language):
-    spipe = Spotlight_Pipeline(language)
+def annotate_triple(triple):
+    spipe = Spotlight_Pipeline('english')
     SUBJECT = None
     PREDICATE = None
     OBJECT = None

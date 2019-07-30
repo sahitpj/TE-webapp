@@ -41,9 +41,11 @@ def getConfigResults():
     annotations = None
     annotated_text = list()
 
-    if q_spotlight == 'Yes':
+    addn_props = {}
+
+    if q_spotlight:
         spipe = Spotlight_Pipeline(q_language)
-        annotations = spipe.annotate(q_text)                              
+        annotations = spipe.annotate(q_text)
         ptr = 0
         flag = 0
         annotated_text.append([0, q_text[:annotations[0]['offset']]])
@@ -61,35 +63,41 @@ def getConfigResults():
         patterns1 = None
         patterns2 = None
         if q_hearst_pattern_type == HEARST_PATTERNS_METHODS[0]:
-            addn_patterns = add_hearst_patterns(parse_hearst_patterns(hearst_patterns), q_hearst_pattern_type, q_hearst_input)
+            addn_patterns, props = add_hearst_patterns(parse_hearst_patterns(hearst_patterns), q_hearst_pattern_type, q_hearst_input)
             hpatterns1 = HearstPatterns(extended = True, same_sentence = True)
             hpatterns1.add_patterns(addn_patterns, q_hearst_pattern_type)
             hpatterns2 = HearstPatterns(extended = True, same_sentence = False)
             hpatterns2.add_patterns(addn_patterns, q_hearst_pattern_type)
             patterns1 = [ hearst_get_triplet(pattern) for pattern in hpatterns1.find_hearstpatterns_spacy(q_text)]
             patterns2 = [ hearst_get_triplet(pattern) for pattern in hpatterns2.find_hearstpatterns_spacy(q_text)]
+            for prop in props:
+                addn_props[prop[0]] = prop[1]
             print(patterns1, patterns2)
             
         elif q_hearst_pattern_type == HEARST_PATTERNS_METHODS[1]:
-            addn_patterns = add_hearst_patterns(parse_hearst_patterns(hearst_patterns), q_hearst_pattern_type, q_hearst_input)
+            addn_patterns, props = add_hearst_patterns(parse_hearst_patterns(hearst_patterns), q_hearst_pattern_type, q_hearst_input)
             hpatterns1 = HearstPatterns(extended = True, same_sentence = True, greedy = True)
             hpatterns1.add_patterns(addn_patterns, q_hearst_pattern_type)
             hpatterns2 = HearstPatterns(extended = True, same_sentence = False, greedy = True)
             hpatterns2.add_patterns(addn_patterns, q_hearst_pattern_type)
             patterns1 = [ hearst_get_triplet(pattern) for pattern in hpatterns1.find_hearstpatterns_spacy(q_text)]
             patterns2 = [ hearst_get_triplet(pattern) for pattern in hpatterns2.find_hearstpatterns_spacy(q_text)]
+            for prop in props:
+                addn_props[prop[0]] = prop[1]
         else:
-            addn_patterns = add_hearst_patterns(parse_hearst_patterns(hearst_patterns), q_hearst_pattern_type, q_hearst_input)
+            addn_patterns, props = add_hearst_patterns(parse_hearst_patterns(hearst_patterns), q_hearst_pattern_type, q_hearst_input)
             hpatterns1 = HearstPatterns(extended = True, same_sentence = True, semi = True)
             hpatterns1.add_patterns(addn_patterns, q_hearst_pattern_type)
             hpatterns2 = HearstPatterns(extended = True, same_sentence = False, semi = True)
             hpatterns2.add_patterns(addn_patterns, q_hearst_pattern_type)
             patterns1 = [ hearst_get_triplet(pattern) for pattern in hpatterns1.find_hearstpatterns_spacy(q_text)]
             patterns2 = [ hearst_get_triplet(pattern) for pattern in hpatterns2.find_hearstpatterns_spacy(q_text)]
+            for prop in props:
+                addn_props[prop[0]] = prop[1]
 
         triples += patterns1 + patterns2
 
-    if q_use_parse_tree == 'Yes':
+    if q_use_parse_tree:
         if q_language == 'English':
             text_extraction = TripleExtraction()
             triplets = list()
@@ -137,10 +145,10 @@ def getConfigResults():
         triples += triplets
     
     annotated_triples = None
-    if q_spotlight == 'Yes':
+    if q_spotlight:
         spipe = Spotlight_Pipeline(q_language)
         annotated_triples = list()
         for triple in triples:
-            annotated_triples.append(spipe.annotate_triple(triple))
+            annotated_triples.append(spipe.annotate_triple(triple, addn_props))
 
     return render_template('triplets.html', annotations=annotations, annotated_text=annotated_text, triplets=triples, q_text=q_text, annotated_triples=annotated_triples)

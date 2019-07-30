@@ -6,7 +6,7 @@ import re
 props = Properties()
 ps = PorterStemmer()
 
-def parse_hearst_patterns(q_hearst_patterns, q_hearst_input):
+def parse_hearst_patterns(q_hearst_patterns):
     patterns = [ r[1:-1].split(',') for r in  q_hearst_patterns.split(';') ] #delimter for the input hearst patterns
     return patterns
 
@@ -27,9 +27,11 @@ def add_hearst_patterns(templates, t, q_hearst_input):
     """
     if q_hearst_input =='verb+prep':
         hearst_patterns = list()
+        props = list()
         for template in templates:
+            props.append((template[0], template[-1]))
             try:
-                verb, proposition = template[0].split("_") # "_" is the default delimiter, mentioned in the Properties class
+                verb, preposition = template[0].split("_") # "_" is the default delimiter, mentioned in the Properties class
             except:
                 raise RuntimeError("delimiter is not set to the proper value, check the properties file")
 
@@ -43,9 +45,14 @@ def add_hearst_patterns(templates, t, q_hearst_input):
 
             heart_pattern = (pattern, template[1], verb+preposition.capitalize(), 3)
             hearst_patterns.append(heart_pattern)
-        return hearst_patterns
+        return hearst_patterns, props
     else:
-        return templates
+        props = list()
+        hearst_patterns = list()
+        for template in templates:
+            props.append((template[1], template[-1]))
+            hearst_patterns.append(template[:-1])
+        return templates, props
 
 
 def create_default():
