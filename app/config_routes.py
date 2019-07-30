@@ -43,8 +43,7 @@ def getConfigResults():
 
     if q_spotlight == 'Yes':
         spipe = Spotlight_Pipeline(q_language)
-        annotations = spipe.annotate(spotlight_address,
-                                        q_text)
+        annotations = spipe.annotate(q_text)
         ptr = 0
         flag = 0
         annotated_text.append([0, q_text[:annotations[0]['offset']]])
