@@ -37,16 +37,15 @@ def search():
     """
     configData = readFromConfig()
 
-    (q_use_parse_tree,
-        q_hearst_pattern_type,
-        q_use_dependencies,
-        q_use_existing_hearst,
-        q_language,
-        q_use_spotlight,
-        q_use_dependencies,
-        addn_props,
-        q_hearst_patterns,
-        q_use_dependencies_with_coref) = list(configData.values())
+    q_use_parse_tree = configData['use_parse_tree']
+    q_hearst_pattern_type = configData['hearst_pattern_type']
+    q_use_dependencies = configData['use_dependencies']
+    q_use_existing_hearst = configData['use_existing_hearst']
+    q_language = configData['language']
+    q_use_spotlight = configData['use_spotlight']
+    addn_props = configData['addn']
+    q_hearst_patterns = configData['addn_hearst_patterns']
+    q_use_dependencies_with_coref = configData['use_dependencies']
 
     triples = list()
     annotations = None
