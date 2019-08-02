@@ -1,0 +1,18 @@
+<html>
+        {% include 'head.html' %}
+
+
+        <body>
+    
+            {% include 'navbar.html' %}
+
+            <div class="container" style="margin-top:40px;">
+                <h2>Configuration Set</h2>
+                {% for count in range(keys | length) %}
+                <p><b>{{ keys[count ]}}</b> - {{ values[count ]}} </p>
+                {% endfor %}
+            </div>
+            
+        </body>
+
+</html>
