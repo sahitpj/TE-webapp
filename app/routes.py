@@ -46,7 +46,7 @@ def search():
         q_use_dependencies,
         addn_props,
         q_hearst_patterns,
-        q_use_dependencies_with_coref) = configData.values()
+        q_use_dependencies_with_coref) = list(configData.values())
 
     triples = list()
     annotations = None
