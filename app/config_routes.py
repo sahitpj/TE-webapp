@@ -10,8 +10,9 @@ from .src.parseTree import TripleExtraction
 from .src.deps import TripleExtraction_Deps, TripleExtraction_Deps_SS
 from .src.multiLang import TripleExtraction_Deps_Lang, TripleExtraction_Lang
 from .src.spotlight import Spotlight_Pipeline
+from .src.configFileUtils import writeToConfig, readFromConfig
 from nltk.tokenize import sent_tokenize
-import nltk
+import nltk, json
 
 # spotlight_config = spotlight.Config()
 # spotlight_address = spotlight_config.spotlight_address
@@ -21,6 +22,19 @@ HEARST_PATTERNS_METHODS = ['Default', 'Non-greedy', 'Semi-greedy']
 @app_flask.route('/config', methods=['GET'])
 def getConfigPage():
     return render_template('config.html')
+
+@app_flask.route('/get-config', methods=['GET'])
+def getConfiguration():
+    configData = readFromConfig()
+    keys = list(configData.keys())
+    values = list(configData.values())
+    for i in range(len(values)):
+        if values[i] == '':
+            values[i] = "Yes"
+
+    print(keys, values)
+
+    return render_template('setconfig.html', keys=keys, values=values)
 
 @app_flask.route('/config-search', methods=['GET', 'POST'])
 def getConfigResults():
@@ -42,8 +56,10 @@ def getConfigResults():
     annotated_text = list()
 
     addn_props = {}
-
+    print("hello")
+    
     if q_spotlight:
+        print("hello")
         spipe = Spotlight_Pipeline(q_language)
         annotations = spipe.annotate(q_text)
         ptr = 0
@@ -57,6 +73,14 @@ def getConfigResults():
             start_ptr = end_ptr + len(annotations[i]['surfaceForm'])
             annotated_text.append([1, annotations[i]])
 
+    addn_patterns, props = add_hearst_patterns(parse_hearst_patterns(hearst_patterns), q_hearst_pattern_type, q_hearst_input)
+    for prop in props:
+        addn_props[prop[0]] = prop[1]
+
+    writeToConfig(q_use_parse_tree, q_use_dependencies, q_dependency_num, "Yes", 
+        q_allow_given_hearst, addn_patterns, q_hearst_pattern_type, q_language, addn_props, q_spotlight)
+
+    """
     if q_allow_given_hearst:
         hpatterns1 = None
         hpatterns2 = None
@@ -150,5 +174,15 @@ def getConfigResults():
         annotated_triples = list()
         for triple in triples:
             annotated_triples.append(spipe.annotate_triple(triple, addn_props))
+    """
 
-    return render_template('triplets.html', annotations=annotations, annotated_text=annotated_text, triplets=triples, q_text=q_text, annotated_triples=annotated_triples)
+    configData = readFromConfig()
+    keys = list(configData.keys())
+    values = list(configData.values())
+    for i in range(len(values)):
+        if values[i] == '':
+            values[i] = "Yes"
+
+    print(keys, values)
+
+    return render_template('setconfig.html', keys=keys, values=values)

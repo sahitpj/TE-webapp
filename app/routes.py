@@ -4,12 +4,15 @@ from flask_cors import CORS, cross_origin
 from app import app_flask
 from .src.pyspotlight import spotlight
 from .src.hpatterns import HearstPatterns
+from .src.hpatternUtils import parse_hearst_patterns, add_hearst_patterns
 from .src.Utils import hearst_get_triplet, hypernym_clean, directRelation_clean, short_relations_clean, annotate_triple
-from .src.hpatternUtils import annotate_predicate_ps, clean_hearst_triple
 from .src.parseTree import TripleExtraction
-from .src.deps import TripleExtraction_Deps
+from .src.deps import TripleExtraction_Deps, TripleExtraction_Deps_SS
+from .src.multiLang import TripleExtraction_Deps_Lang, TripleExtraction_Lang
+from .src.spotlight import Spotlight_Pipeline
+from .src.configFileUtils import writeToConfig, readFromConfig
 from nltk.tokenize import sent_tokenize
-import nltk
+import nltk, json
 
 spotlight_config = spotlight.Config()
 spotlight_address = spotlight_config.spotlight_address
@@ -32,6 +35,19 @@ def search():
     """
     Triplet extraction function for the application. Triggered by the 'get triplets' button
     """
+    configData = readFromConfig()
+
+    (q_use_parse_tree,
+        q_use_dependencies,
+        q_dependecy_level,
+        q_use_dependencies_with_coref,
+        q_use_existing_hearst,
+        q_hearst_patterns,
+        q_hearst_pattern_type,
+        q_language,
+        q_addn_props,
+        q_use_spotlight) = configData.values()
+
     triples = list()
     annotations = None
     annotated_text = list()
@@ -42,17 +58,18 @@ def search():
 
     print(q_method)
 
-    sentences = nltk.sent_tokenize(q_text)
-    word_tokenized_sentences = list()
-    all_words = list()
-    for sent in sentences:
-        words = nltk.word_tokenize(sent)
-        word_tokenized_sentences.append(words)
-        all_words.extend(words)
+    triples = list()
 
-    if q_spotlight:
-        annotations = spotlight.annotate(spotlight_address,
-                                        q_text)
+    annotations = None
+    annotated_text = list()
+
+    addn_props = {}
+    print("hello")
+    print([q_use_spotlight])
+    if q_use_spotlight != None:
+        print("hello")
+        spipe = Spotlight_Pipeline(q_language)
+        annotations = spipe.annotate(q_text)
         ptr = 0
         flag = 0
         annotated_text.append([0, q_text[:annotations[0]['offset']]])
@@ -65,46 +82,64 @@ def search():
             annotated_text.append([1, annotations[i]])
 
 
-    if q_method == METHODS[0]:
+    if q_use_existing_hearst:
         hpatterns1 = None
         hpatterns2 = None
         patterns1 = None
         patterns2 = None
-        q_pattern_method = request.form.get("pattern-method")
-        if q_pattern_method == HEARST_PATTERNS_METHODS[0]:
+        if q_hearst_pattern_type == HEARST_PATTERNS_METHODS[0]:
             hpatterns1 = HearstPatterns(extended = True, same_sentence = True)
+            hpatterns1.add_patterns(q_hearst_patterns, q_hearst_pattern_type)
             hpatterns2 = HearstPatterns(extended = True, same_sentence = False)
+            hpatterns2.add_patterns(q_hearst_patterns, q_hearst_pattern_type)
             patterns1 = [ hearst_get_triplet(pattern) for pattern in hpatterns1.find_hearstpatterns_spacy(q_text)]
             patterns2 = [ hearst_get_triplet(pattern) for pattern in hpatterns2.find_hearstpatterns_spacy(q_text)]
-            print(patterns1, patterns2)
             
-        elif q_pattern_method == HEARST_PATTERNS_METHODS[1]:
+        elif q_hearst_pattern_type == HEARST_PATTERNS_METHODS[1]:
             hpatterns1 = HearstPatterns(extended = True, same_sentence = True, greedy = True)
+            hpatterns1.add_patterns(q_hearst_patterns, q_hearst_pattern_type)
             hpatterns2 = HearstPatterns(extended = True, same_sentence = False, greedy = True)
+            hpatterns2.add_patterns(q_hearst_patterns, q_hearst_pattern_type)
             patterns1 = [ hearst_get_triplet(pattern) for pattern in hpatterns1.find_hearstpatterns_spacy(q_text)]
             patterns2 = [ hearst_get_triplet(pattern) for pattern in hpatterns2.find_hearstpatterns_spacy(q_text)]
+           
         else:
             hpatterns1 = HearstPatterns(extended = True, same_sentence = True, semi = True)
+            hpatterns1.add_patterns(q_addn_patterns, q_hearst_pattern_type)
             hpatterns2 = HearstPatterns(extended = True, same_sentence = False, semi = True)
+            hpatterns2.add_patterns(q_hearst_patterns, q_hearst_pattern_type)
             patterns1 = [ hearst_get_triplet(pattern) for pattern in hpatterns1.find_hearstpatterns_spacy(q_text)]
             patterns2 = [ hearst_get_triplet(pattern) for pattern in hpatterns2.find_hearstpatterns_spacy(q_text)]
+        
 
-        triples += [clean_hearst_triple(pattern) for pattern in patterns1] + [clean_hearst_triple(pattern) for pattern in patterns2]
+        triples += patterns1 + patterns2
 
-    elif q_method == METHODS[1]:
-        text_extraction = TripleExtraction()
-        triplets = list()
-        for sentence in sent_tokenize(q_text):
-            triple = text_extraction.treebank(sentence)
-            triplets.append(triple)
-        print(triplets)
-        triples += triplets
+    if q_use_parse_tree:
+        if q_language == 'English':
+            text_extraction = TripleExtraction()
+            triplets = list()
+            for sentence in sent_tokenize(q_text):
+                triple = text_extraction.treebank(sentence)
+                triplets.append(triple)
+            print(triplets)
+            triples += triplets
+        else:
+            text_extraction = TripleExtraction_Lang(q_language)
+            triplets = list()
+            for sentence in sent_tokenize(q_text):
+                triple = text_extraction.treebank(sentence)
+                triplets.append(triple)
+            print(triplets)
+            triples += triplets
 
-    elif q_method == METHODS[2] or q_method == METHODS[3]:
 
+    if q_use_dependencies == 'Yes':
         NOUN_RELATIONS = ['nmod', 'hypernym (low confidence)']
-
-        text_extraction = TripleExtraction_Deps()
+        text_extraction = None
+        if q_language == 'English':
+            text_extraction = TripleExtraction_Deps()
+        else:
+            text_extraction = TripleExtraction_Deps_Lang(q_language)
         triplets = list()
         sr = list()
         sr_preps = list()
@@ -125,12 +160,13 @@ def search():
             triplets.extend(short_relations_clean(sr[short_relation], sr_preps[short_relation]))
         triplets.extend(cleaned_hypernyms)
         triples += triplets
-
+    
     annotated_triples = None
-    if q_spotlight:
+    if q_use_spotlight != None:
+        spipe = Spotlight_Pipeline(q_language)
         annotated_triples = list()
         for triple in triples:
-            annotated_triples.append(annotate_triple(triple))
+            annotated_triples.append(spipe.annotate_triple(triple, addn_props))
 
     return render_template('triplets.html', annotations=annotations, annotated_text=annotated_text, triplets=triples, q_text=q_text, annotated_triples=annotated_triples)
     
