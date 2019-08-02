@@ -105,7 +105,7 @@ def search():
            
         else:
             hpatterns1 = HearstPatterns(extended = True, same_sentence = True, semi = True)
-            hpatterns1.add_patterns(q_addn_patterns, q_hearst_pattern_type)
+            hpatterns1.add_patterns(q_hearst_patterns, q_hearst_pattern_type)
             hpatterns2 = HearstPatterns(extended = True, same_sentence = False, semi = True)
             hpatterns2.add_patterns(q_hearst_patterns, q_hearst_pattern_type)
             patterns1 = [ hearst_get_triplet(pattern) for pattern in hpatterns1.find_hearstpatterns_spacy(q_text)]
