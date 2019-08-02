@@ -38,15 +38,15 @@ def search():
     configData = readFromConfig()
 
     (q_use_parse_tree,
-        q_use_dependencies,
-        q_dependecy_level,
-        q_use_dependencies_with_coref,
-        q_use_existing_hearst,
-        q_hearst_patterns,
         q_hearst_pattern_type,
+        q_use_dependencies,
+        q_use_existing_hearst,
         q_language,
-        q_addn_props,
-        q_use_spotlight) = configData.values()
+        q_use_spotlight,
+        q_use_dependencies,
+        addn_props,
+        q_hearst_patterns,
+        q_use_dependencies_with_coref) = configData.values()
 
     triples = list()
     annotations = None
