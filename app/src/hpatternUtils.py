@@ -44,7 +44,7 @@ def add_hearst_patterns(templates, t, q_hearst_input):
                 else:
                     pattern = r'.*?NP_(\w+).*?({}).*?{}.*?NP_(\w+)'.format(verb, preposition)
 
-                heart_pattern = (pattern, template[2], verb+preposition.capitalize(), 3)
+                heart_pattern = (pattern, template[1], verb+preposition.capitalize(), 3)
                 hearst_patterns.append(heart_pattern)
         return hearst_patterns, props
     else:
