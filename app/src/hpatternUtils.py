@@ -30,29 +30,33 @@ def add_hearst_patterns(templates, t, q_hearst_input):
         props = list()
         for template in templates:
             props.append((template[0], template[-1]))
-            try:
-                verb, preposition = template[0].split("_") # "_" is the default delimiter, mentioned in the Properties class
-            except:
-                raise RuntimeError("delimiter is not set to the proper value, check the properties file")
+            if len(template) > 2:
+                try:
+                    verb, preposition = template[0].split("_") # "_" is the default delimiter, mentioned in the Properties class
+                except:
+                    raise RuntimeError("delimiter is not set to the proper value, check the properties file")
 
-            pattern = None
-            if t == 'Default':
-                pattern = r'NP_(\w+).*?({}).*?{}.*?.*?NP_(\w+)'.format(verb, preposition)
-            elif t == 'Non-Greedy':
-                pattern = r'.*NP_(\w+).*?({}).*?{}.*?NP_(\w+)'.format(verb, preposition)
-            else:
-                pattern = r'.*?NP_(\w+).*?({}).*?{}.*?NP_(\w+)'.format(verb, preposition)
+                pattern = None
+                if t == 'Default':
+                    pattern = r'NP_(\w+).*?({}).*?{}.*?.*?NP_(\w+)'.format(verb, preposition)
+                elif t == 'Non-Greedy':
+                    pattern = r'.*NP_(\w+).*?({}).*?{}.*?NP_(\w+)'.format(verb, preposition)
+                else:
+                    pattern = r'.*?NP_(\w+).*?({}).*?{}.*?NP_(\w+)'.format(verb, preposition)
 
-            heart_pattern = (pattern, template[1], verb+preposition.capitalize(), 3)
-            hearst_patterns.append(heart_pattern)
+                heart_pattern = (pattern, template[2], verb+preposition.capitalize(), 3)
+                hearst_patterns.append(heart_pattern)
         return hearst_patterns, props
     else:
         props = list()
         hearst_patterns = list()
         for template in templates:
-            props.append((template[1], template[-1]))
-            hearst_patterns.append(template[:-1])
-        return templates, props
+            if len(template) == 2:
+                props.append((template[0], template[-1]))
+            else:
+                props.append((template[2], template[-1]))
+                hearst_patterns.append(template[:-1])
+        return hearst_patterns, props
 
 
 def create_default():

@@ -58,7 +58,7 @@
                     <hr>
                 </div>
             </section>
-            <section style="margin-top:40px; padding-bottom: 100px;">
+            <section style="margin-top:40px;">
                 <div class="container">
                     <h2>Predefined hearst patterns</h2>
                     <p>These are the patterns which are pred-defined by the web-app and will be used by default in the demo and
@@ -69,6 +69,19 @@
                     <p>('((NP_\\w+ ?(, )?)+(and |or )?other NP_\\w+)', 'last', 'typeOf', 0)</p>
                     <p>('(NP_\\w+ (, )?include (NP_\\w+ ?(, )?(and |or )?)+)', 'first', 'typeOf', 0)</p>
                     <p>('(NP_\\w+ (, )?especially (NP_\\w+ ?(, )?(and |or )?)+)', 'first', 'typeOf', 0)</p>
+                    <hr>
+                </div>
+            </section>
+
+            <section style="margin-top:40px; padding-bottom: 100px;">
+                <div class="container">
+                    <h2>Predefined Dbpedia Property annotations</h2>
+                    <p>These are the DBpedia annotations which are linked to the properties. These predefined properties are present in the <a href="https://github.com/sahitpj/TE-webapp/blob/develop/app/src/properties">properties file</a>. They
+                        can however be overidden by adding tuples to the hearst pattern box of these type
+                    </p>
+                    <p>({verb+prep},dbpedia annotation)</p>
+                    <p>Example - (broadcast_on, http://dbpedia.org/ontology/frequency)</p>
+                    <p>These properties can be seen in the <b>addn</b> field after the configuration has been set</p>
                     <hr>
                 </div>
             </section>
