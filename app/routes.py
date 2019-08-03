@@ -60,6 +60,7 @@ def search():
     triples = list()
 
     annotations = None
+
     annotated_text = list()
 
     addn_props = {}
@@ -113,7 +114,7 @@ def search():
 
         triples += patterns1 + patterns2
 
-    if q_use_parse_tree:
+    if q_use_parse_tree != None:
         if q_language == 'English':
             text_extraction = TripleExtraction()
             triplets = list()
