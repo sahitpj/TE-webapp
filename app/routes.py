@@ -168,5 +168,9 @@ def search():
         for triple in triples:
             annotated_triples.append(spipe.annotate_triple(triple, addn_props))
 
-    return render_template('triplets.html', annotations=annotations, annotated_text=annotated_text, triplets=triples, q_text=q_text, annotated_triples=annotated_triples)
-    
+    getRdf = None
+    if annotated_triples:
+        writeRDFtoFile(annotated_triples, triples, "example.nt")
+        getRDf = True
+
+    return render_template('triplets.html', annotations=annotations, annotated_text=annotated_text, triplets=triples, q_text=q_text, annotated_triples=annotated_triples, getrdf=getRdf)

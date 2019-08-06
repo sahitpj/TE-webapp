@@ -186,3 +186,9 @@ def getConfigResults():
     print(keys, values)
 
     return render_template('setconfig.html', keys=keys, values=values)
+
+@app_flask.route('/get-rdf', methods=['GET']):
+def getRDF():
+    f = open("example.nt")
+    text = ''.join(f.readlines())
+    return "<body><xmp>{}</xmp></body>".format(text)
