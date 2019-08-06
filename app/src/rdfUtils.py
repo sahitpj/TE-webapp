@@ -55,7 +55,7 @@ def writeRDFtoFile(annotated_triples, triples, destination):
         if annotated_triples[i][0]:
             subject = URIRef(annotated_triples[i][0][0])
         else:
-            subject_obj = BNode()
+            subject = BNode()
             rdfGraph.add( (subject, FOAF.name, Literal(triples[i][0])) )
         """
         predicate checking 
