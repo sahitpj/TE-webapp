@@ -45,22 +45,22 @@ class Spotlight_Pipeline(object):
             combined_word = ' '.join(list(triple[0][1]) + list(triple[0][0]))
             annotation = self.annotate_word(combined_word)
             print(annotation)
-            if annotation[0] == combined_word:
+            if annotation:
                 annotation = self.annotate_word(main_word)
-            if annotation[0] != main_word:
+            if annotation:
                 SUBJECT = annotation
         else:
             annotation = self.annotate_word(triple[0])
-            if annotation[0] != triple[0]:
+            if annotation:
                 SUBJECT = annotation
 
         if isinstance(triple[2], list) or isinstance(triple[0], tuple):
             main_word = triple[2][0]
             combined_word = ' '.join(list(triple[2][1]) + list(triple[2][0]))
             annotation = self.annotate_word(combined_word)[0]
-            if annotation[0] == combined_word:
+            if annotation:
                 annotation = self.annotate_word(main_word)
-            if annotation[0] != main_word:
+            if annotation:
                 OBJECT = annotation
         else:
             annotation = self.annotate_word(triple[2])
