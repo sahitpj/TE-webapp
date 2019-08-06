@@ -8,33 +8,72 @@ def createRDF(annotated_triples, triples):
     """
     rdfGraph = Graph()
     for i in range(len(triples)):
-        subject = URIRef(annotated_triples[i][0])
+        subject = None
         predicate = None
+        obj = None
+        """
+        subject checking 
+        """
+        if annotated_triples[i][0]:
+            subject = URIRef(annotated_triples[i][0][0])
+        else:
+            subject_obj = BNode()
+            rdfGraph.add( (subject, FOAF.name, Literal(triples[i][0])) )
+        """
+        predicate checking 
+        """
         if annotated_triples[i][1]:
             predicate = URIRef(annotated_triples[i][1])
         else:
-            predicate_obj = BNode()
-            rdfGraph.add( (predicate_obj, FOAF.name, Literal(triples[i][1])) )
-            rdfGraph.add( (predicate_obj, RDF.type, RDF.Property) )
-        predicate = URIRef(triples[i][1])
-        obj = URIRef(triples[i][2])
+            predicate = BNode()
+            rdfGraph.add( (predicate, FOAF.name, Literal(triples[i][1])) )
+            rdfGraph.add( (predicate, RDF.type, RDF.Property) )
+        """
+        object checking 
+        """
+        if annotated_triples[i][2]:
+            obj = URIRef(annotated_triples[i][2][0])
+        else:
+            obj = BNode()
+            rdfGraph.add( (obj, FOAF.name, Literal(triples[i][2])) )
 
         rdfGraph.add( (subject, predicate, obj) ) 
     return rdfGraph.serialize(format='turtle')
 
 def writeRDFtoFile(annotated_triples, triples, destination):
+    """
+    returns string with the triples in the rdf 'turtle' format. This can be written to file
+    """
     rdfGraph = Graph()
     for i in range(len(triples)):
-        subject = URIRef(annotated_triples[i][0])
+        subject = None
         predicate = None
+        obj = None
+        """
+        subject checking 
+        """
+        if annotated_triples[i][0]:
+            subject = URIRef(annotated_triples[i][0][0])
+        else:
+            subject_obj = BNode()
+            rdfGraph.add( (subject, FOAF.name, Literal(triples[i][0])) )
+        """
+        predicate checking 
+        """
         if annotated_triples[i][1]:
             predicate = URIRef(annotated_triples[i][1])
         else:
-            predicate_obj = BNode()
-            rdfGraph.add( (predicate_obj, FOAF.name, Literal(triples[i][1])) )
-            rdfGraph.add( (predicate_obj, RDF.type, RDF.Property) )
-        predicate = URIRef(triples[i][1])
-        obj = URIRef(triples[i][2])
+            predicate = BNode()
+            rdfGraph.add( (predicate, FOAF.name, Literal(triples[i][1])) )
+            rdfGraph.add( (predicate, RDF.type, RDF.Property) )
+        """
+        object checking 
+        """
+        if annotated_triples[i][2]:
+            obj = URIRef(annotated_triples[i][2][0])
+        else:
+            obj = BNode()
+            rdfGraph.add( (obj, FOAF.name, Literal(triples[i][2])) )
 
         rdfGraph.add( (subject, predicate, obj) ) 
     rdfGraph.serialize(format='turtle', destination=destination)

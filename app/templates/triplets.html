@@ -78,7 +78,11 @@
                     <div class="col-lg-2">
                         <li>{{ triplets[triple_count][0] }}</li>
                         {% if annotated_triples %}
-                        <a  href="{{ annotated_triples[triple_count][0][0] }}" style="margin-left: 20px; font-size:10px">dbo</a>
+                            {% if annotated_triples[triple_count][0] %}
+                            <a href="{{ annotated_triples[triple_count][0][0] }}" style="margin-left: 20px; font-size:10px">dbr</a>
+                            {% else %}
+                            <a href=# style="margin-left: 20px; font-size:10px">dbr</a>
+                            {% endif %}
                         {% endif %} 
                     </div>
                     <div class="col-lg-2">
@@ -94,7 +98,11 @@
                     <div class="col-lg-8">
                         <li>{{ triplets[triple_count][2] }}</li>
                         {% if annotated_triples %}
-                        <a href="{{ annotated_triples[triple_count][2][0] }}" style="margin-left: 20px; font-size:10px">dbo</a>
+                            {% if annotated_triples[triple_count][2] %}
+                            <a href="{{ annotated_triples[triple_count][2][0] }}" style="margin-left: 20px; font-size:10px">dbr</a>
+                            {% else %}
+                            <a href=# style="margin-left: 20px; font-size:10px">dbr</a>
+                            {% endif %}
                         {% endif %}  
                     </div>
                 </div>

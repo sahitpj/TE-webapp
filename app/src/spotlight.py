@@ -33,7 +33,7 @@ class Spotlight_Pipeline(object):
             return self.read_annotations(annotations)
         except spotlight.SpotlightException:
             print("URI not found")
-            return word
+            return None
 
 
     def annotate_triple(self, triple, addn_props):
