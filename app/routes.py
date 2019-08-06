@@ -11,6 +11,7 @@ from .src.deps import TripleExtraction_Deps, TripleExtraction_Deps_SS
 from .src.multiLang import TripleExtraction_Deps_Lang, TripleExtraction_Lang
 from .src.spotlight import Spotlight_Pipeline
 from .src.configFileUtils import writeToConfig, readFromConfig
+fron .src.rdfUtils import writeRDFtoFile, createRDF
 from nltk.tokenize import sent_tokenize
 import nltk, json
 

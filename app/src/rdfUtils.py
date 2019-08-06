@@ -16,8 +16,8 @@ def createRDF(annotated_triples, triples):
             predicate_obj = BNode()
             rdfGraph.add( (predicate_obj, FOAF.name, Literal(triples[i][1])) )
             rdfGraph.add( (predicate_obj, RDF.type, RDF.Property) )
-        predicate = URIRef(triple[1])
-        obj = URIRef(triple[2])
+        predicate = URIRef(triples[i][1])
+        obj = URIRef(triples[i][2])
 
         rdfGraph.add( (subject, predicate, obj) ) 
     return rdfGraph.serialize(format='turtle')
@@ -33,8 +33,8 @@ def writeRDFtoFile(annotated_triples, triples, destination):
             predicate_obj = BNode()
             rdfGraph.add( (predicate_obj, FOAF.name, Literal(triples[i][1])) )
             rdfGraph.add( (predicate_obj, RDF.type, RDF.Property) )
-        predicate = URIRef(triple[1])
-        obj = URIRef(triple[2])
+        predicate = URIRef(triples[i][1])
+        obj = URIRef(triples[i][2])
 
         rdfGraph.add( (subject, predicate, obj) ) 
     rdfGraph.serialize(format='turtle', destination=destination)
