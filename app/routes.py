@@ -172,6 +172,6 @@ def search():
     getRdf = None
     if annotated_triples:
         writeRDFtoFile(annotated_triples, triples, "example.nt")
-        getRDf = True
+        getRdf = True
 
     return render_template('triplets.html', annotations=annotations, annotated_text=annotated_text, triplets=triples, q_text=q_text, annotated_triples=annotated_triples, getrdf=getRdf)
