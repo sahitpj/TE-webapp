@@ -64,7 +64,7 @@ class Spotlight_Pipeline(object):
                 OBJECT = annotation
         else:
             annotation = self.annotate_word(triple[2])
-            if annotation[0] != triple[2]:
+            if annotation:
                 OBJECT = annotation
 
         if triple[1] == Constants.hypernym_PREDICATE:
