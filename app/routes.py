@@ -5,9 +5,10 @@ from app import app_flask
 from .src.pyspotlight import spotlight
 from .src.hpatterns import HearstPatterns
 from .src.hpatternUtils import parse_hearst_patterns, add_hearst_patterns
-from .src.Utils import hearst_get_triplet, hypernym_clean, directRelation_clean, short_relations_clean, annotate_triple
+from .src.Utils import hearst_get_triplet, hypernym_clean, directRelation_clean, short_relations_clean, annotate_triple, tripletsEntityReplace
 from .src.parseTree import TripleExtraction
 from .src.deps import TripleExtraction_Deps, TripleExtraction_Deps_SS
+from .src.depsAdv import AdvancedTripleExtractionDeps
 from .src.multiLang import TripleExtraction_Deps_Lang, TripleExtraction_Lang
 from .src.spotlight import Spotlight_Pipeline
 from .src.configFileUtils import writeToConfig, readFromConfig
@@ -46,7 +47,7 @@ def search():
     q_use_spotlight = configData['use_spotlight']
     addn_props = configData['addn']
     q_hearst_patterns = configData['addn_hearst_patterns']
-    q_use_dependencies_with_coref = configData['use_dependencies']
+    q_use_dependencies_with_coref = configData['use_dependencies_with_coref']
 
     triples = list()
     annotations = None
@@ -113,7 +114,7 @@ def search():
             patterns2 = [ hearst_get_triplet(pattern) for pattern in hpatterns2.find_hearstpatterns_spacy(q_text)]
         
 
-        triples += patterns1 + patterns2
+        triples += tripletsEntityReplace(patterns1, q_text) + tripletsEntityReplace(patterns2, q_text)
 
     if q_use_parse_tree != None:
         if q_language == 'English':
@@ -134,7 +135,7 @@ def search():
             triples += triplets
 
 
-    if q_use_dependencies == 'Yes':
+    if q_use_dependencies != None:
         NOUN_RELATIONS = ['nmod', 'hypernym (low confidence)']
         text_extraction = None
         if q_language == 'English':
@@ -160,7 +161,11 @@ def search():
         for short_relation in range(len(sr)):
             triplets.extend(short_relations_clean(sr[short_relation], sr_preps[short_relation]))
         triplets.extend(cleaned_hypernyms)
-        triples += triplets
+        triples += tripletsEntityReplace(triplets, q_text)
+
+    if q_use_dependencies_with_coref != None:
+        text_extraction = AdvancedTripleExtractionDeps(q_text)
+        triples += text_extraction.get_triples()
     
     annotated_triples = None
     if q_use_spotlight != None:

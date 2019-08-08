@@ -42,6 +42,8 @@ def getConfigResults():
     q_hearst_pattern_type = request.form.get("pattern-method")
     q_use_parse_tree = request.form.get("parse-tree")
     q_use_dependencies = request.form.get("use-dependencies")
+    q_use_dependencies_coref = request.form.get("use-dependencies-coref")
+    print(q_use_dependencies_coref)
     q_dependency_num = request.form.get("dependencies-number")
     q_text = request.form.get("comment")
     q_spotlight = request.form.get("spotlight")
@@ -77,7 +79,7 @@ def getConfigResults():
     for prop in props:
         addn_props[prop[0]] = prop[1]
 
-    writeToConfig(q_use_parse_tree, q_use_dependencies, q_dependency_num, "Yes", 
+    writeToConfig(q_use_parse_tree, q_use_dependencies, q_dependency_num, q_use_dependencies_coref, 
         q_allow_given_hearst, addn_patterns, q_hearst_pattern_type, q_language, addn_props, q_spotlight)
 
     """

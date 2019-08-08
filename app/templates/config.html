@@ -80,16 +80,20 @@
                     <div class="row" style="margin-top:20px;"">
                         <div class="col-lg-4">
                             <div class="group1">
-                                <label for="sel3">Use Dependencies Method</label>
-                                <select class="form-control" id="sel3" name="use-dependencies">
-                                    <option>No</option>
-                                    <option>Yes</option>
-                                </select><br>
+                                <div style="margin-left: 20px;">
+                                    <input style="zoom:2;" class="form-check-input" type="checkbox" value="" id="defaultCheck1" name="use-dependencies">
+                                    <label class="form-check-label" for="defaultCheck1">
+                                        <h3>&nbsp;&nbsp;Use Dependencies</h3>
+                                    </label>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-lg-4" style="margin-top:30px;">
-                            <div class="dependencies-number" style="display: none;">
-                                <input type="text" id="dependencies-number" name="dependencies-number" placeholder="Dependency Level" required>
+                        <div class="col-lg-4">
+                            <div style="margin-left: 20px;">
+                                <input style="zoom:2;" class="form-check-input" type="checkbox" value="" id="defaultCheck2" name="use-dependencies-coref">
+                                <label class="form-check-label" for="defaultCheck2">
+                                    <h3>&nbsp;&nbsp;Use Dependencies with Coreferences</h3>
+                                </label>
                             </div>
                         </div>
                     </div>

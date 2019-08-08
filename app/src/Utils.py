@@ -2,10 +2,13 @@ from .Constants import Constants
 from .spotlight import Spotlight_Pipeline 
 from .properties import Properties
 from nltk.stem import PorterStemmer
+import spacy
 
 constants = Constants()
 properties = Properties()
 ps = PorterStemmer()
+
+nlp = spacy.load('en')
 
 def hearst_get_triplet(hearst_pattern):
     OBJECT = None
@@ -105,3 +108,24 @@ def annotate_triple(triple):
 
 def get_preposition(dep):
     return dep[2][0]
+
+def tripletsEntityReplace(triplets, text):
+        """
+        Replaces main words with the entire entites they reperesent
+        """
+        entity_triples = list()
+        doc = nlp(sentence)
+        entities = [ ent.text for ent in doc.ents ]
+        for triple in triplets:
+            triple = list(triple)
+            for entity in entites:
+                if triple[0] in entity:
+                    triple[0] = entity
+                    break
+            for entity in entites:
+                if triple[2] in entity:
+                    triple[2] = entity
+                    break
+            if triple[0] != triple[2]:
+                entity_triples.append(triple)
+        return entity_triples
