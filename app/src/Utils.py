@@ -111,18 +111,18 @@ def get_preposition(dep):
 
 def tripletsEntityReplace(triplets, text):
         """
-        Replaces main words with the entire entites they reperesent
+        Replaces main words with the entire entities they reperesent
         """
         entity_triples = list()
         doc = nlp(text)
         entities = [ ent.text for ent in doc.ents ]
         for triple in triplets:
             triple = list(triple)
-            for entity in entites:
+            for entity in entities:
                 if triple[0] in entity:
                     triple[0] = entity
                     break
-            for entity in entites:
+            for entity in entities:
                 if triple[2] in entity:
                     triple[2] = entity
                     break
