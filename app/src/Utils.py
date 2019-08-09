@@ -114,7 +114,7 @@ def tripletsEntityReplace(triplets, text):
         Replaces main words with the entire entites they reperesent
         """
         entity_triples = list()
-        doc = nlp(sentence)
+        doc = nlp(text)
         entities = [ ent.text for ent in doc.ents ]
         for triple in triplets:
             triple = list(triple)
