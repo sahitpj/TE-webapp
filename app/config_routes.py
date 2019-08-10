@@ -43,7 +43,6 @@ def getConfigResults():
     q_use_parse_tree = request.form.get("parse-tree")
     q_use_dependencies = request.form.get("use-dependencies")
     q_use_dependencies_coref = request.form.get("use-dependencies-coref")
-    print(q_use_dependencies_coref)
     q_dependency_num = request.form.get("dependencies-number")
     q_text = request.form.get("comment")
     q_spotlight = request.form.get("spotlight")
@@ -51,6 +50,7 @@ def getConfigResults():
     q_language = request.form.get("language")
 
     hearst_patterns = request.form.get("hearst-patterns")
+    props_input = request.form.get("props")
 
     triples = list()
 
@@ -75,7 +75,10 @@ def getConfigResults():
             start_ptr = end_ptr + len(annotations[i]['surfaceForm'])
             annotated_text.append([1, annotations[i]])
 
+    print(hearst_patterns)
     addn_patterns, props = add_hearst_patterns(parse_hearst_patterns(hearst_patterns), q_hearst_pattern_type, q_hearst_input)
+    dummy_patterns, props_from_input = add_hearst_patterns(parse_hearst_patterns(props_input), q_hearst_pattern_type, q_hearst_input)
+    props.extend(props_from_input)
     for prop in props:
         addn_props[prop[0]] = prop[1]
 

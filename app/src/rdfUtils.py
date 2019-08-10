@@ -27,7 +27,7 @@ def createRDF(annotated_triples, triples):
         else:
             predicate = BNode()
             rdfGraph.add( (predicate, FOAF.name, Literal(triples[i][1])) )
-            rdfGraph.add( (predicate, RDF.type, RDF.Property) )
+            # rdfGraph.add( (predicate, RDF.type, RDF.Property) )
         """
         object checking 
         """
