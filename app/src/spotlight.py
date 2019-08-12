@@ -57,7 +57,7 @@ class Spotlight_Pipeline(object):
         if isinstance(triple[2], list) or isinstance(triple[0], tuple):
             main_word = triple[2][0]
             combined_word = ' '.join(list(triple[2][1]) + list(triple[2][0]))
-            annotation = self.annotate_word(combined_word)[0]
+            annotation = self.annotate_word(combined_word)
             if annotation:
                 annotation = self.annotate_word(main_word)
             if annotation:

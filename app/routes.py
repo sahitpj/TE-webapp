@@ -5,7 +5,7 @@ from app import app_flask
 from .src.pyspotlight import spotlight
 from .src.hpatterns import HearstPatterns
 from .src.hpatternUtils import parse_hearst_patterns, add_hearst_patterns
-from .src.Utils import hearst_get_triplet, hypernym_clean, directRelation_clean, short_relations_clean, annotate_triple, tripletsEntityReplace
+from .src.Utils import hearst_get_triplet, hypernym_clean, directRelation_clean, short_relations_clean, tripletsEntityReplace
 from .src.parseTree import TripleExtraction
 from .src.deps import TripleExtraction_Deps, TripleExtraction_Deps_SS
 from .src.depsAdv import AdvancedTripleExtractionDeps
