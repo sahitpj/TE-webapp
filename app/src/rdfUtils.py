@@ -54,14 +54,17 @@ def writeRDFtoFile(annotated_triples, triples, destination):
         """
         if annotated_triples[i][0]:
             subject = URIRef(annotated_triples[i][0][0])
+            rdfGraph.add( (subject, RDF.type, FOAF.Document) )
         else:
             subject = BNode()
+            rdfGraph.add( (subject, RDF.type, FOAF.Document) )
             rdfGraph.add( (subject, FOAF.name, Literal(triples[i][0])) )
         """
         predicate checking 
         """
         if annotated_triples[i][1]:
             predicate = URIRef(annotated_triples[i][1])
+            rdfGraph.add( (predicate, RDF.type, FOAF.Property) )
         else:
             predicate = BNode()
             rdfGraph.add( (predicate, FOAF.name, Literal(triples[i][1])) )
@@ -71,8 +74,10 @@ def writeRDFtoFile(annotated_triples, triples, destination):
         """
         if annotated_triples[i][2]:
             obj = URIRef(annotated_triples[i][2][0])
+            rdfGraph.add( (obj, RDF.type, FOAF.Document) )
         else:
             obj = BNode()
+            rdfGraph.add( (obj, RDF.type, FOAF.Document) )
             rdfGraph.add( (obj, FOAF.name, Literal(triples[i][2])) )
 
         rdfGraph.add( (subject, predicate, obj) ) 
