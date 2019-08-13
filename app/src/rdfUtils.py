@@ -66,7 +66,7 @@ def writeRDFtoFile(annotated_triples, triples, destination):
             predicate = URIRef(annotated_triples[i][1])
             rdfGraph.add( (predicate, RDF.type, FOAF.Property) )
         else:
-            predicate = BNode()
+            predicate = URIRef("http://predicateProperty.org/{}".format(triples[i][1]))
             rdfGraph.add( (predicate, FOAF.name, Literal(triples[i][1])) )
             rdfGraph.add( (predicate, RDF.type, RDF.Property) )
         """
