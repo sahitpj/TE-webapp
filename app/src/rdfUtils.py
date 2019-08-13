@@ -66,7 +66,8 @@ def writeRDFtoFile(annotated_triples, triples, destination):
             predicate = URIRef(annotated_triples[i][1])
             rdfGraph.add( (predicate, RDF.type, FOAF.Property) )
         else:
-            print(triples[i][1])
+            if triples[i][1] == "hypernym (low confidence)":
+                triples[i][1] = "hypernym_low_confidence"
             predicate = URIRef("http://predicateProperty.org/{}".format(triples[i][1]))
             rdfGraph.add( (predicate, FOAF.name, Literal(triples[i][1])) )
             rdfGraph.add( (predicate, RDF.type, RDF.Property) )
