@@ -46,7 +46,11 @@ def getConfigResults():
     q_dependency_num = request.form.get("dependencies-number")
     q_text = request.form.get("comment")
     q_spotlight = request.form.get("spotlight")
-    q_hearst_input = request.form.get("hearst-input-type")
+    # q_hearst_input = request.form.get("hearst-input-type")
+    # 
+    # * Hearst pattern input method removed, Only Regex patterns are now allowed into the web-application
+    # 
+    q_hearst_input = "default"
     q_language = request.form.get("language")
 
     hearst_patterns = request.form.get("hearst-patterns")

@@ -16,7 +16,7 @@
                 </p>
                 <a href="/about" class="btn btn-secondary button m" role="button">About Configuration</a>
                 <form action="/config-search" method="post" novalidate="novalidate" id="config">
-                <br><label style="margin-top: 10px;" for="sel5">Select Language:</label> (Note - the existing hearst patterns are only of English)
+                <br><label style="margin-top: 10px;" for="sel5">Select Language:</label> (Note - the existing hearst patterns are only for English)
                 <select style="max-width: 160px;" class="form-control" id="sel5" name="language">
                     <option>English</option>
                     <option>Spanish</option>
@@ -36,19 +36,19 @@
                             </div>
                         </div>
                         <div class="col-lg-4">
-                            <label for="sel0">Select Input Hearst Type:</label>
+                            <!-- <label for="sel0">Select Input Hearst Type:</label>
                             <select class="form-control" id="sel0" name="hearst-input-type">
                                 <option>verb+prep</option>
                                 <option>Regex pattern</option>
-                            </select><br>
+                            </select><br> -->
                             <!-- <p class="hearst-ex">Add your hearst patterns in the following pattern (semi-colon separated):-</p>
                             <p class="hearst-ex">({verb_preposition}, first/last)</p>
                             <p class="hearst-ex">Ex - (founder_of, first)</p> -->
                             <p>For more about Hearst pattern configuration</p>
                             <a href="/about" class="btn btn-secondary button m" role="button">Hearst Configuration</a>
                             <hr>
-                            <input type="checkbox" name="allow_given_hearst">&nbsp;&nbsp;Also use predefined Hearst patterns<br><br>
-                            <button type="button" class="btn btn-secondary" data-toggle="tooltip" data-placement="bottom" title="Tooltip on bottom">
+                            <input type="checkbox" name="allow_given_hearst" onclick="hearstFunction()">&nbsp;&nbsp;Also use predefined Hearst patterns<br><br>
+                            <button type="button" class="btn btn-secondary" data-toggle="tooltip" data-placement="bottom" title="Example of one such predefined hearst pattern - ('(NP_\\w+ (, )?such as (NP_\\w+ ? (, )?(and |or )?)+)', 'first', 'typeOf', 0)">
                                 Examples
                             </button>
                             <div class="group" style="margin-top:20px;">
@@ -67,7 +67,7 @@
                             <div style="margin-left: 20px; margin-top:20px;">
                                 <input style="zoom:2;" class="form-check-input" type="checkbox" value="" id="defaultCheck1" name="parse-tree">
                                 <label class="form-check-label" for="defaultCheck1">
-                                    <h3>&nbsp;&nbsp;Use Parse-Tree Method</h3>
+                                    <p style="font-size:30px;">&nbsp;&nbsp;Use Parse-Tree Method</p>
                                 </label>
                             </div>
                         </div>
@@ -85,7 +85,7 @@
                                 <div style="margin-left: 20px;">
                                     <input style="zoom:2;" class="form-check-input" type="checkbox" value="" id="defaultCheck1" name="use-dependencies">
                                     <label class="form-check-label" for="defaultCheck1">
-                                        <h3>&nbsp;&nbsp;Use Dependencies</h3>
+                                        <p style="font-size:30px;">&nbsp;&nbsp;Use Dependencies</p>
                                     </label>
                                 </div>
                             </div>
@@ -94,7 +94,7 @@
                             <div style="margin-left: 20px;">
                                 <input style="zoom:2;" class="form-check-input" type="checkbox" value="" id="defaultCheck2" name="use-dependencies-coref">
                                 <label class="form-check-label" for="defaultCheck2">
-                                    <h3>&nbsp;&nbsp;Use Dependencies with Coreferences</h3>
+                                    <p style="font-size:30px;">&nbsp;&nbsp;Use Dependencies with Coreferences</p>
                                 </label>
                             </div>
                         </div>
@@ -104,7 +104,7 @@
                         <div style="margin-left: 20px;">
                             <input style="zoom:2;" class="form-check-input" type="checkbox" value="" id="defaultCheck1" name="spotlight">
                             <label class="form-check-label" for="defaultCheck1">
-                                <h3>&nbsp;&nbsp;Spotlight Annotations</h3>
+                                <p style="font-size:30px;">&nbsp;&nbsp;Spotlight</p>
                             </label>
                         </div>
                         </div>
@@ -145,18 +145,32 @@
         });
 
         var hearstTextArea = document.getElementsByName("hearst-patterns")[0];
-        var hearst_type = document.getElementsByName("hearst-input-type")[0];
+        // var hearst_type = document.getElementsByName("hearst-input-type")[0];
+        hearstTextArea.innerHTML = "(r'NP_(\w+).*?(broadcast).*?on.*?NP_(\w+)',first,broadcastOn,3,http://dbpedia.org/ontology/frequency);(r'NP_(\w+).*?(air).*?on.*?NP_(\w+)',first,airOn,3,http://dbpedia.org/ontology/channel)";
 
-        hearst_type.addEventListener('change', function(){
-            if(this.value == 'verb+prep') {
-                console.log(10);
-                hearstTextArea.innerHTML = '(broadcast_on,first,http://dbpedia.org/ontology/frequency);(air_on,first,http://dbpedia.org/ontology/channel)';
-            }
+        // *
+        // * Hearst pattern input method removed, Only Regex patterns are now allowed into the web-application
+        // *
+
+        // hearst_type.addEventListener('change', function(){
+        //     if(this.value == 'verb+prep') {
+        //         console.log(10);
+        //         hearstTextArea.innerHTML = '(broadcast_on,first,http://dbpedia.org/ontology/frequency);(air_on,first,http://dbpedia.org/ontology/channel)';
+        //     }
             
-            else {
-                hearstTextArea.innerHTML = "(r'NP_(\w+).*?(broadcast).*?on.*?NP_(\w+)',first,broadcastOn,3,http://dbpedia.org/ontology/frequency);(r'NP_(\w+).*?(air).*?on.*?NP_(\w+)',first,airOn,3,http://dbpedia.org/ontology/channel)";
+        //     else {
+        //         hearstTextArea.innerHTML = "(r'NP_(\w+).*?(broadcast).*?on.*?NP_(\w+)',first,broadcastOn,3,http://dbpedia.org/ontology/frequency);(r'NP_(\w+).*?(air).*?on.*?NP_(\w+)',first,airOn,3,http://dbpedia.org/ontology/channel)";
+        //     }
+        // })
+
+        function hearstFunction() {
+            var checkBox = document.getElementsByName("allow_given_hearst")[0];
+            var textArea = document.getElementsByName("hearst-patterns")[0];
+            if (checkBox.checked == true){
+                console.log(10);
+                textArea.value += ";((NP_\\w+ ( )?such as (NP_\\w+ ? ( )?(and |or )?)+), first, typeOf, 0, http://purl.org/linguistics/gold/hypernym);((such NP_\\w+ ( )?as (NP_\\w+ ?( )?(and |or )?)+), first, typeOf, 0, http://purl.org/linguistics/gold/hypernym);(((NP_\\w+ ?( )?)+(and |or )?other NP_\\w+), last, typeOf, 0, http://purl.org/linguistics/gold/hypernym);((NP_\\w+ ( )?include (NP_\\w+ ?( )?(and |or )?)+), first, typeOf, 0, http://purl.org/linguistics/gold/hypernym);((NP_\\w+ ( )?especially (NP_\\w+ ?( )?(and |or )?)+), first, typeOf, 0, http://purl.org/linguistics/gold/hypernym)"
             }
-        })        
+        }        
 
     </script>
 </html>

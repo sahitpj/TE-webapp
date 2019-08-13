@@ -27,6 +27,9 @@ HEARST_PATTERNS_METHODS = ['Default', 'Non-greedy', 'Semi-greedy']
 def index():
     return render_template('index.html')
 
+@app_flask.route('/evaluations', methods=['GET'])
+def getEvaluations():
+    return render_template('evaluations.html')
 
 @app_flask.route('/about', methods=['GET'])
 def getAbout():

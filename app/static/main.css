@@ -71,3 +71,15 @@ html {
   font-size: 15px;
   font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
+
+.eval-text {
+  background-color: #d3d3d3;
+  padding: 10px;
+}
+
+.triples-text {
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  color: rebeccapurple;
+  background-color: bisque;
+  padding: 5px;
+}

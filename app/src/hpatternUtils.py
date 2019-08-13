@@ -26,6 +26,10 @@ def add_hearst_patterns(templates, t, q_hearst_input):
     in such a case the templates are directly returned
     """
     if q_hearst_input =='verb+prep':
+        # 
+        # Hearst pattern input method removed, Only Regex patterns are now allowed into the web-application.
+        # The following if clause method will not called during run-time. Instead the else clause will always be called
+        # 
         hearst_patterns = list()
         props = list()
         for template in templates:
@@ -34,7 +38,7 @@ def add_hearst_patterns(templates, t, q_hearst_input):
                 try:
                     verb, preposition = template[0].split("_") # "_" is the default delimiter, mentioned in the Properties class
                 except:
-                    raise RuntimeError("delimiter is not set to the proper value, check the properties file")
+                    raise RuntimeError("verb+prep delimiter is not set to the proper value, check the properties file")
 
                 pattern = None
                 if t == 'Default':
