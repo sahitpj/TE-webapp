@@ -1,0 +1,291 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Minimal by Steve Smith</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <p class="view"><a href="https://github.com/sahitpj/TE-webapp">View the Project on GitHub</small></a></p>
+        <ul>
+          <li><a href="https://sahitpj.github.io/gs/">View <strong>Blog</strong></a></li>
+          <li><a href="https://github.com/orderedlist/minimal/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/sahitpj/TE-webapp">Fork On <strong>GitHub</strong></a></li>
+        </ul>
+        <br><br>
+        <h3><a href="index.html">Main Documentation</a></h3>
+        <h3><a href="hearst.html">About Hearst Patterns</a></h3>
+      </header>
+      <section>
+        <h1>Use Cases</h1>
+        <ul>
+            <li><a href="#using-hearst-patterns">Using Default Hearst Patterns</a></li>
+            <li><a href="#more-hearst-patterns">Adding additional Hearst Patterns</a></li>
+            <li><a href="#dependencies">Using Dependencies</a></li>
+            <li><a href="#lexicalizations">Using Lexicalizations</a></li>
+        </ul>
+
+        <p>Here we talk about various use cases of the web application and the general effects of some configuration changes.
+        </p>
+        <p>The example text being used for testing can be found here - https://worksheets.codalab.org/rest/bundles/0xb4ab264671fe4e3bae00e9367a88eaeb/contents/blob/</p>
+
+        <h2 id="using-hearst-patterns" style="padding-top:20px;">Using Default Hearst Patterns</h2>
+        <p>Using defined hearst patterns are a set of hearst patterns which have already been internally stored into the web application. Using these hearst patterns simply means Using
+        extra hearst patterns, which should improve the results which are achieved by the two. Take the following text for example
+        </p>
+
+        <pre>New York—often called New York City or the City of <br>New York to distinguish it from the State of <br>New York, of which it is a part—is the most populous <br>city in the United States and the center of the New York <br>metropolitan area, the premier gateway for legal <br>immigration to the United States and one of the most <br>populous urban agglomerations in the world. A global <br>power city, New York exerts a significant impact upon <br>commerce, finance, media, art, fashion, research, <br>technology, education, and entertainment, its fast pace <br>defining the term New York minute. Home to the <br>headquarters of the United Nations, New York is an <br>important center for international diplomacy and has <br>been described as the cultural and financial capital of <br>the world.</pre>
+
+        <p>Running these on the following two configurations, we get the following resulst (RDF) :-</p>
+        <h3>Without Using Predefined Hearst Patterns</h3>
+        <p>We get no triples</p>
+        <h3>Using Predefined Hearst Patterns</h3>
+        <xmp>
+            @prefix ns1: <http://predicateProperty.org/> .
+            @prefix ns2: <http://xmlns.com/foaf/0.1/> .
+            @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+            @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+            @prefix xml: <http://www.w3.org/XML/1998/namespace> .
+            @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+            
+            <http://dbpedia.org/resource/United_and_uniting_churches> 
+            a ns2:Document ;
+                ns1:typeOf <http://dbpedia.org...> .
+            
+            ns1:attribute a rdf:Property ;
+                ns2:name "attribute" .
+            
+            ns1:typeOf a rdf:Property ;
+                ns2:name "typeOf" .
+            
+            <http://dbpedia.org/resource/List_...> 
+                        a ns2:Document .
+            
+            [] a ns2:Document ;
+                ns1:attribute [ a ns2:Document ;
+                        ns2:name "center" ] ;
+                ns2:name "headquarters" .
+            
+            [] a ns2:Document ;
+                ns1:attribute [ a ns2:Document ;
+                        ns2:name "center" ] ;
+                ns2:name "headquarters" .
+            
+            [] a ns2:Document ;
+                ns1:attribute [ a ns2:Document ;
+                        ns2:name "part" ] ;
+                ns2:name "new_york" .
+            
+            [] a ns2:Document ;
+                ns1:attribute [ a ns2:Document ;
+                        ns2:name "part" ] ;
+                ns2:name "new_york" .
+        </xmp>
+        <p>We thus get better results by doing so.</p>
+
+        <h2 id="more-hearst-patterns" style="padding-top:20px;">Adding additional Hearst Patterns</h2>
+        <p>Adding hearst patterns just like the above process, helps in increasing the chances of extracting triples from the following text.
+            Although this cannot be guaranteed everytime, since it's dependent in the text given, the chances do increase significantly.
+        </p>
+
+        <h2 id="dependencies" style="padding-top:20px;">Using Dependencies</h2>
+        <p>Dependencies information triples extraction methods relies on the dependenices obtained from the text in order to be able to 
+            extract triples. Since unlike Hearst Patterns, the following process does not depend explicitely or directly on the sentence structute, a 
+            generalized algorithm can be written for the following. Use the above text, we run the app on two configurations.
+            <li>Predefined Hearst Patterns, Spotlight</li>
+            <li>Predefined Hearst Patterns, Dependencies, Spotlight</li>
+
+        <p>The triples obtained from the following</p>
+        <p>Predefined Hearst Patterns</p>
+        <xmp>
+                @prefix ns1: <http://predicateProperty.org/> .
+                @prefix ns2: <http://xmlns.com/foaf/0.1/> .
+                @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+                @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+                @prefix xml: <http://www.w3.org/XML/1998/namespace> .
+                @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+                
+                <http://dbpedia.org/resource/United_and_uniting_churches> 
+                a ns2:Document ;
+                    ns1:typeOf <http://dbpedia.org...> .
+                
+                ns1:attribute a rdf:Property ;
+                    ns2:name "attribute" .
+                
+                ns1:typeOf a rdf:Property ;
+                    ns2:name "typeOf" .
+                
+                <http://dbpedia.org/resource/List_...> 
+                            a ns2:Document .
+                
+                [] a ns2:Document ;
+                    ns1:attribute [ a ns2:Document ;
+                            ns2:name "center" ] ;
+                    ns2:name "headquarters" .
+                
+                [] a ns2:Document ;
+                    ns1:attribute [ a ns2:Document ;
+                            ns2:name "center" ] ;
+                    ns2:name "headquarters" .
+                
+                [] a ns2:Document ;
+                    ns1:attribute [ a ns2:Document ;
+                            ns2:name "part" ] ;
+                    ns2:name "new_york" .
+                
+                [] a ns2:Document ;
+                    ns1:attribute [ a ns2:Document ;
+                            ns2:name "part" ] ;
+                    ns2:name "new_york" .
+            </xmp>
+
+            <p>Predefined Hearst Patterns + Dependencies</p>
+            <xmp>
+            @prefix ns1: <http://xmlns.com/foaf/0.1/> .
+            @prefix ns2: <http://predicateProperty.org/> .
+            @prefix ns3: <http://purl.org/linguistics/gold/> .
+            @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+            @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+            @prefix xml: <http://www.w3.org/XML/1998/namespace> .
+            @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+            
+            <http://dbpedia.org/resource/City> a ns1:Document ;
+                ns2:hypernym_low_confidence <http://dbpedia.org/resource/United_States> ;
+                ns3:hypernym <http://dbpedia.org/resource/New_York> .
+            
+            <http://dbpedia.org/resource/Milecastle> a ns1:Document ;
+                ns2:hypernym_low_confidence <http://dbpedia.org/resource/Immigration> .
+            
+            <http://dbpedia.org/resource/New_York_City> a ns1:Document ;
+                ns2:hypernym_low_confidence <http://dbpedia.org/resource/New_York> .
+            
+            <http://dbpedia.org/resource/U.S._state> a ns1:Document ;
+                ns2:hypernym_low_confidence <http://dbpedia.org/resource/New_York> .
+            
+            <http://dbpedia.org/resource/United_and_uniting_churches> a ns1:.. ;
+                ns2:typeOf <http://dbpedia.org/resource/List_of_metropolitan_.> .
+            
+            <http://dbpedia.org/resource/Urban_area> a ns1:Document ;
+                ns2:hypernym_low_confidence [ a ns1:Document ;
+                        ns1:name "world" ] .
+            
+            ns2:attribute a rdf:Property ;
+                ns1:name "attribute" .
+            
+            ns2:describ_as a rdf:Property ;
+                ns1:name "describ_as" .
+            
+            ns2:hypernym_low_confidence a rdf:Property ;
+                ns1:name "hypernym_low_confidence" .
+            
+            ns2:typeOf a rdf:Property ;
+                ns1:name "typeOf" .
+            
+            ns3:hypernym a ns1:Property .
+            
+            <http://dbpedia.org/resource/Area> a ns1:Document .
+            
+            <http://dbpedia.org/resource/Capital_city> a ns1:Document ;
+                ns2:hypernym_low_confidence [ a ns1:Document ;
+                        ns1:name "world" ] .
+            
+            <http://dbpedia.org/resource/Diplomacy> a ns1:Document .
+            
+            <http://dbpedia.org/resource/Home> a ns1:Document ;
+                ns2:hypernym_low_confidence [ a ns1:Document ;
+                        ns1:name "headquarters" ] .
+            
+            <http://dbpedia.org/resource/Immigration> a ns1:Document ;
+                ns2:hypernym_low_confidence <http://dbpedia.org/resource/United_States> .
+            
+            <http://dbpedia.org/resource/List_of_metropolitan_areas_in_Pakistan> a .. .
+            
+            <http://dbpedia.org/resource/United_Nations> a ns1:Document .
+            
+            <http://dbpedia.org/resource/United_States> a ns1:Document .
+            
+            <http://dbpedia.org/resource/New_York> a ns1:Document .
+            
+            [] a ns1:Document ;
+                ns2:describ_as <http://dbpedia.org/resource/Capital_city> ;
+                ns1:name "center" .
+            
+            [] a ns1:Document ;
+                ns2:hypernym_low_confidence <http://dbpedia.org/resource/Area> ;
+                ns1:name "center" .
+            
+            [] a ns1:Document ;
+                ns2:attribute [ a ns1:Document ;
+                        ns1:name "center" ] ;
+                ns1:name "headquarters" .
+            
+            [] a ns1:Document ;
+                ns2:hypernym_low_confidence <http://dbpedia.org/resource/United_Nations> ;
+                ns1:name "headquarters" .
+            
+            [] a ns1:Document ;
+                ns2:attribute [ a ns1:Document ;
+                        ns1:name "part" ] ;
+                ns1:name "new_york" .
+            
+            [] a ns1:Document ;
+                ns2:hypernym_low_confidence <http://dbpedia.org/resource/Diplomacy> ;
+                ns1:name "center" .
+            
+            [] a ns1:Document ;
+                ns2:attribute [ a ns1:Document ;
+                        ns1:name "center" ] ;
+                ns1:name "headquarters" .
+            
+            [] a ns1:Document ;
+                ns3:hypernym <http://dbpedia.org/resource/Home> ;
+                ns1:name "center" .
+            
+            [] a ns1:Document ;
+                ns2:attribute [ a ns1:Document ;
+                        ns1:name "part" ] ;
+                ns1:name "new_york" .
+            
+            </xmp>
+            <p>As demonstrated from above, the number of triples extracted increase drastically. Thus the above method is highly 
+                useful
+            </p>
+
+
+            <h2 id="lexicalizations">Using Lexicalizations</h2>
+            <p>Lexicalizations mainluy determine the property for RDF generated. Since RDF must include a valid resource for 
+                predicates lexicalizations, unlike the subject and object, there is a key role in doing so. In the above text, using dependencies 
+                method if we were to add lexicalizations for few properties such as 
+                <li>describ_ad -> http://xyz.org/ontology/Description </li>
+                The following RDF becomes
+            </p>
+
+            <xmp>
+            ns2:describ_as a rdf:Property ;
+            ns1:name "describ_as" .
+            . 
+            . 
+            .
+            <http://xyz.org/ontology/Description> a rdf:Property
+
+            </xmp>
+        </p>
+
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="http://github.com/sahitpj">Jayakrishna Sahit</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+  </body>
+</html>
