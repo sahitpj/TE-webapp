@@ -54,32 +54,32 @@ def writeRDFtoFile(annotated_triples, triples, destination):
         """
         if annotated_triples[i][0]:
             subject = URIRef(annotated_triples[i][0][0])
-            rdfGraph.add( (subject, RDF.type, FOAF.Document) )
+            # rdfGraph.add( (subject, RDF.type, FOAF.Document) )
         else:
             subject = BNode()
-            rdfGraph.add( (subject, RDF.type, FOAF.Document) )
+            # rdfGraph.add( (subject, RDF.type, FOAF.Document) )
             rdfGraph.add( (subject, FOAF.name, Literal(triples[i][0])) )
         """
         predicate checking 
         """
         if annotated_triples[i][1]:
             predicate = URIRef(annotated_triples[i][1])
-            rdfGraph.add( (predicate, RDF.type, FOAF.Property) )
+            # rdfGraph.add( (predicate, RDF.type, FOAF.Property) )
         else:
             if triples[i][1] == "hypernym (low confidence)":
                 triples[i][1] = "hypernym_low_confidence"
             predicate = URIRef("http://predicateProperty.org/{}".format(triples[i][1]))
             rdfGraph.add( (predicate, FOAF.name, Literal(triples[i][1])) )
-            rdfGraph.add( (predicate, RDF.type, RDF.Property) )
+            # rdfGraph.add( (predicate, RDF.type, RDF.Property) )
         """
         object checking 
         """
         if annotated_triples[i][2]:
             obj = URIRef(annotated_triples[i][2][0])
-            rdfGraph.add( (obj, RDF.type, FOAF.Document) )
+            # rdfGraph.add( (obj, RDF.type, FOAF.Document) )
         else:
             obj = BNode()
-            rdfGraph.add( (obj, RDF.type, FOAF.Document) )
+            # rdfGraph.add( (obj, RDF.type, FOAF.Document) )
             rdfGraph.add( (obj, FOAF.name, Literal(triples[i][2])) )
 
         rdfGraph.add( (subject, predicate, obj) ) 
