@@ -1,9 +1,10 @@
 # Triplet Extraction webapp 
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
 
-To use the following web-app, in an empty directory
+The following is the code base for the web application - DBpedia Extract. The application extracts triples from text and displays the rdf generated from the triples extracted. 
 
-1. clone the following repository
-2. run install.sh first. At the end, make sure the coreNLP server is running. Visit [link](https://stanfordnlp.github.io/CoreNLP/download.html) for any other queries.
-3. Then go to the TE-webapp/ directory in a new terminal window.
-4. Run the run.sh file
+The application can be found - `http://text2rdf.linkeddata.es` [link](http://text2rdf.linkeddata.es)
+
+![image](main.png)
+
+The application runs on `Flask`, uses `stanford coreNLP`, Google's `SyntaxNet` and `Spacy` for parsers and dependency parsers. RDF generated from the application is in the `turtle` format.

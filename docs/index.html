@@ -1,0 +1,108 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Minimal by Steve Smith</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <p class="view"><a href="https://github.com/sahitpj/TE-webapp">View the Project on GitHub</small></a></p>
+        <ul>
+          <li><a href="https://sahitpj.github.io/gs/">View <strong>Blog</strong></a></li>
+          <li><a href="https://github.com/sahitpj/TE-webapp/tags">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/sahitpj/TE-webapp">Fork On <strong>GitHub</strong></a></li>
+        </ul>
+        <br><br>
+        <h3><a href="hearst.html">About hearst patterns</a></h3>
+      </header>
+      <section>
+        <h1>DBPedia Extract Manual</h1>
+
+        <p>The following is a manual to use DBpedia Extract - tool for efficiently extracting triples from a text andf displaying the coresponding RDF. 
+          The web application can be found <a href="http://text2rdf.linkeddata.es">here</a></p>
+
+        <p>In order to use the web application the following steps are to be done :-</p>
+        <ul>
+          <li>Setting up the configuration, this inclues the following sub-steps</li>
+          <ul>
+            <li>Selecting the required methods for the configurations</li>
+            <li>Adding additional input parameters</li>
+            <li>Language</li>
+          </ul>
+          <li>Running the application on the text</li>
+          <li>Understanding the results</li>
+        </ul>
+        
+
+        <h2>Setting the configuration</h2>
+
+        <p>Through out the manual, we will be using an example text for better understanding. In our case we will be using the following text :-
+        </p>
+
+        <pre>Solar energy is radiant light and heat from the Sun<br>harnessed using a range of ever-evolving technologies <br>such as solar heating, photovoltaics, solar thermal <br>energy, solar architecture and artificial <br>photosynthesis.</pre>
+
+        <p>First in order to set the configuration, we shall navigate to the configuration page, which can be found by
+          selcting the config tab on the navigation bar
+        </p>
+
+        <img src="pictures/nav-config.png"/>
+        <br><br>
+
+        <p>We next select the methods which we shall want to use. Such methods can simply checked out using the checkboxes</p>
+        <img src="pictures/methods.png"/>
+        <br><br>
+
+        <p>In our case let us select the <b>Dependencies</b> method. Informatio about methods can be found by clicking on the <b>About methods</b> button.</p>
+        <p>Do remember to select the required language. Hearst pattern will be discussed in the <b>About hearst patterns</b> page</p>
+        
+        <p>We then click the set configuration button. This will set the configuration you have chosen and you will be directed to a page
+          which will display the settings you have chosen. In our case the setting pagew ill show the following.
+        </p>
+
+        <img src="pictures/settings.png"/>
+        <br><br>
+
+        <p>In general the configuration can be checked by clicking on the <b>Get configuration</b> button.</p>
+        
+
+        <h2>Using the Web Application</h2>
+        <p>Once the configuration has been set, we can now use the web-application. We do so byu heading onto the main page</p>
+        <img src="pictures/main.png" />
+        <br><br>
+
+        <p>Here we simply the required text, we would like to get triples from and simply click the <b>Get triples button</b>. This then directs you to the results page. For
+        our given text and configuration, we should get the following page</p>
+
+        <img src="pictures/results.png">
+        <br><br>
+        
+        <h2>Understanding the results</h2>
+        <p>We have now got the triples from the text. However in order to get the RDF, <b>Spotlight must be checked in the configuration</b>
+        The results when spotlight is selected along with the same methods we have used before</p>
+
+        <img src="pictures/results-spotlight.png " />
+        <br><br>
+
+        <p>RDF for the following text can be looked at, by simply clicking the <b>Get RDF text</b> button. For our text, this should open the following page</p>
+        <img src="pictures/rdf.png">
+        <br><br>
+
+        
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="http://github.com/orderedlist">Jayakrishna Sahit</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+  </body>
+</html>
