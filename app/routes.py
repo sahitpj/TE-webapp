@@ -68,7 +68,6 @@ def search():
 
     annotated_text = list()
 
-    addn_props = {}
     print("hello")
     print([q_use_spotlight])
     if q_use_spotlight != None:
@@ -176,10 +175,10 @@ def search():
         annotated_triples = list()
         for triple in triples:
             annotated_triples.append(spipe.annotate_triple(triple, addn_props))
-
+    print(addn_props)
     getRdf = None
     if annotated_triples:
         writeRDFtoFile(annotated_triples, triples, "example.nt")
         getRdf = True
-
+	
     return render_template('triplets.html', annotations=annotations, annotated_text=annotated_text, triplets=triples, q_text=q_text, annotated_triples=annotated_triples, getrdf=getRdf)
