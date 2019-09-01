@@ -7,6 +7,8 @@ The application can be found - `http://text2rdf.linkeddata.es` [link](http://tex
 
 The manual for the following application can be found at the following [link](https://docs.google.com/document/d/1wjDltKVBqwjA3020mLj9TlBXviKq_f_n_Ga82tJJN6g/edit?usp=sharing)
 
+Experiments, Results and other source code developed for the purpose of the application can be found [here](https://github.com/sahitpj/GSoC-codebase)
+
 ![image](main.png)
 
 The application runs on `Flask`, uses `stanford coreNLP`, Google's `SyntaxNet` and `Spacy` for parsers and dependency parsers. RDF generated from the application is in the `turtle` format.
