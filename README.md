@@ -1,13 +1,13 @@
 # Triple Extraction webapp 
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
 
-This is the code of the web application DBpedia Extract created from the [base code](https://github.com/sahitpj/GSoC-codebase). This application extracts triples (subject, predicate, object) from plain text and can generate RDF from the triples. This project has been implemented under DBpedia supervision during the summer of 2019 funded by the [Google Summer of Code](https://summerofcode.withgoogle.com/dashboard/project/5162860156551168/overview/) program.
+This is the code of the web application `DBpedia triple Extractor` created as an online version of the programs created in the [base code](https://github.com/sahitpj/GSoC-codebase). This webapp extracts triples (subject, predicate, object) from plain text and can generate [RDF](https://www.w3.org/RDF/) from the triples. This project has been implemented under [DBpedia supervision](https://wiki.dbpedia.org/gsoc-2019) during the summer of 2019 (north hemisphere) funded by the [Google Summer of Code](https://summerofcode.withgoogle.com/dashboard/project/5162860156551168/overview/) program.
 
-The webapp is running here: - `http://text2rdf.linkeddata.es` [link](http://text2rdf.linkeddata.es)
+The webapp is running at [text2rdf.linkeddata.es](http://text2rdf.linkeddata.es)
 
 The user manual for the webapp can be found at the following [link](https://docs.google.com/document/d/1wjDltKVBqwjA3020mLj9TlBXviKq_f_n_Ga82tJJN6g/edit?usp=sharing)
 
-Experiments, intermadiate results and other source code developed for the purpose of the application can be found [here](https://github.com/sahitpj/GSoC-codebase)
+Experiments, intermadiate results and other source code developed for the purpose of the application can be found [here](https://github.com/sahitpj/GSoC-codebase).
 
 ![image](main.png)
 
